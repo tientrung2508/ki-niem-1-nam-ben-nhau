@@ -166,14 +166,15 @@
 <body>
 
   <div class="container">
+    <!-- Khai báo chính xác tên file khớp với danh sách trên GitHub -->
     <div class="bg-image-wrapper">
       <img src="IMG_2288.png" class="bg-image active" id="img0" alt="Kỷ niệm">
-      <img src="IMG_2294.jpeg" class="bg-image" id="img1" alt="Kỷ niệm">
-      <img src="IMG_2295.jpeg" class="bg-image" id="img2" alt="Kỷ niệm">
-      <img src="IMG_2296.jpeg" class="bg-image" id="img3" alt="Kỷ niệm">
-      <img src="IMG_2297.jpeg" class="bg-image" id="img4" alt="Kỷ niệm">
-      <img src="IMG_2298.jpeg" class="bg-image" id="img5" alt="Kỷ niệm">
-      <img src="IMG_2299.jpeg" class="bg-image" id="img6" alt="Kỷ niệm">
+      <img src="IMG_2294.JPEG" class="bg-image" id="img1" alt="Kỷ niệm" onerror="this.src='IMG_2294.jpeg'">
+      <img src="IMG_2295.JPEG" class="bg-image" id="img2" alt="Kỷ niệm" onerror="this.src='IMG_2295.jpeg'">
+      <img src="IMG_2296.JPEG" class="bg-image" id="img3" alt="Kỷ niệm" onerror="this.src='IMG_2296.jpeg'">
+      <img src="IMG_2297.JPEG" class="bg-image" id="img4" alt="Kỷ niệm" onerror="this.src='IMG_2297.jpeg'">
+      <img src="IMG_2298.JPEG" class="bg-image" id="img5" alt="Kỷ niệm" onerror="this.src='IMG_2298.jpeg'">
+      <img src="IMG_2299.JPEG" class="bg-image" id="img6" alt="Kỷ niệm" onerror="this.src='IMG_2299.jpeg'">
     </div>
     <div class="overlay"></div>
 
@@ -193,10 +194,8 @@
     </div>
   </div>
 
-  <audio id="bgMusic" preload="auto">
-    <source src="music.mp3" type="audio/mpeg">
-    <source src="Ed%20Sheeran%20-%20Photograph%20(Lyrics)%20-%207clouds.mp3" type="audio/mpeg">
-  </audio>
+  <!-- Trỏ chính xác đến file music.mp3 -->
+  <audio id="bgMusic" src="music.mp3" preload="auto"></audio>
 
   <script>
     const messages = [
@@ -217,13 +216,15 @@
       const music = document.getElementById('bgMusic');
       const progressContainer = document.getElementById('progressContainer');
 
-      // Tự động phát nhạc khi ấn nút
-      music.play().catch(e => console.log("Lỗi phát nhạc:", e));
+      // Ép trình duyệt phát nhạc
+      music.play().then(() => {
+        console.log("Đã phát nhạc thành công!");
+      }).catch(err => console.log("Lỗi nhạc:", err));
       
       btn.style.display = 'none';
       progressContainer.style.display = 'block';
 
-      // 1. Chạy đếm số ngày
+      // 1. Đếm từ 0 đến 365 ngày
       let currentDay = 0;
       const counterElement = document.getElementById('dayCounter');
       const messageElement = document.getElementById('finalMessage');
@@ -238,7 +239,7 @@
           messageElement.classList.add('show');
           startHeartRain();
 
-          // 2. Chuyển ảnh liên tục cứ mỗi 5 giây
+          // 2. Tự động đổi ảnh + lời nhắn mỗi 5 giây
           setInterval(() => {
             currentIndex = (currentIndex + 1) % totalImages;
             changeStage(currentIndex);
@@ -247,7 +248,7 @@
         counterElement.innerText = currentDay;
       }, 30);
 
-      // Cập nhật thanh thời lượng nhạc
+      // Cập nhật thanh thời lượng
       music.ontimeupdate = () => {
         const bar = document.getElementById('progressBar');
         if (music.duration) {
