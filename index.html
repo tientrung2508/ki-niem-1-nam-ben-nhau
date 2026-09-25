@@ -49,7 +49,7 @@
       width: 100%; height: 100%;
       object-fit: cover;
       opacity: 0;
-      transition: opacity 1.5s ease-in-out, transform 8s ease-in-out;
+      transition: opacity 1.5s ease-in-out, transform 6s ease-in-out;
       transform: scale(1);
     }
 
@@ -72,10 +72,6 @@
       text-align: center;
       margin-top: 25px;
       width: 100%;
-    }
-
-    .counter-box {
-      transition: all 0.8s ease;
     }
 
     .counter-number {
@@ -109,7 +105,7 @@
       opacity: 1;
     }
 
-    /* Thanh điều khiển nhạc & Tiến trình */
+    /* Controls */
     .controls-area {
       position: relative;
       z-index: 10;
@@ -154,7 +150,7 @@
       transition: width 0.3s linear;
     }
 
-    /* Hiệu ứng Trái tim rơi */
+    /* Trái tim rơi */
     .heart-particle {
       position: absolute;
       top: -30px;
@@ -174,7 +170,6 @@
 <body>
 
   <div class="container">
-    <!-- Danh sách 7 bức ảnh theo đúng tên file trên GitHub -->
     <div class="bg-image-wrapper">
       <img src="IMG_2288.png" class="bg-image active" id="img0" alt="Kỷ niệm">
       <img src="IMG_2294.jpeg" class="bg-image" id="img1" alt="Kỷ niệm" onerror="this.src='IMG_2294.JPEG'">
@@ -215,19 +210,22 @@
       "Cảm ơn em đã cùng anh đi qua 365 ngày tuyệt vời! Yêu em thật nhiều ❤️"
     ];
 
-    let currentStage = 0;
-    let heartInterval;
+    let currentIndex = 0;
+    const totalImages = 7;
+    let slideInterval;
 
     function startStory() {
       const btn = document.getElementById('startBtn');
       const music = document.getElementById('bgMusic');
       const progressContainer = document.getElementById('progressContainer');
 
-      music.play().catch(() => {});
+      // Phát nhạc
+      music.play().catch(e => console.log("Lỗi phát nhạc:", e));
+      
       btn.style.display = 'none';
       progressContainer.style.display = 'block';
 
-      // 1. Chạy đếm từ 1 đến 365 ngày
+      // 1. Hiệu ứng đếm số ngày
       let currentDay = 0;
       const counterElement = document.getElementById('dayCounter');
       const messageElement = document.getElementById('finalMessage');
@@ -242,13 +240,13 @@
           messageElement.classList.add('show');
           startHeartRain();
 
-          // Thiết lập tự động chuyển ảnh theo thời gian bài nhạc (~258s)
-          setupTimeline();
+          // 2. Bắt đầu tự động chuyển ảnh mỗi 5.5 giây
+          startSlideshow();
         }
         counterElement.innerText = currentDay;
       }, 30);
 
-      // Cập nhật thanh tiến trình nhạc
+      // Cập nhật thanh thời lượng nhạc
       music.ontimeupdate = () => {
         const bar = document.getElementById('progressBar');
         if (music.duration) {
@@ -257,44 +255,34 @@
       };
     }
 
-    function changeStage(index) {
-      if (index === currentStage) return;
+    function startSlideshow() {
+      // Tự động chuyển hình tiếp theo sau mỗi 5.5s độc lập
+      slideInterval = setInterval(() => {
+        currentIndex = (currentIndex + 1) % totalImages;
+        changeStage(currentIndex);
+      }, 5500);
+    }
 
-      // Đổi ảnh active
+    function changeStage(index) {
       const images = document.querySelectorAll('.bg-image');
       images.forEach((img, i) => {
         img.classList.toggle('active', i === index);
       });
 
-      // Đổi câu thoại
       const messageElement = document.getElementById('finalMessage');
       messageElement.classList.remove('show');
+      
       setTimeout(() => {
         messageElement.innerText = messages[index] || messages[0];
         messageElement.classList.add('show');
-      }, 500);
-
-      currentStage = index;
-    }
-
-    function setupTimeline() {
-      const music = document.getElementById('bgMusic');
-      // Tự động chuyển 7 giai đoạn ảnh khớp với thời lượng bài nhạc
-      setInterval(() => {
-        if (!music.paused && music.duration) {
-          const stageIndex = Math.floor((music.currentTime / music.duration) * 7);
-          if (stageIndex < 7 && stageIndex !== currentStage) {
-            changeStage(stageIndex);
-          }
-        }
-      }, 1000);
+      }, 400);
     }
 
     function startHeartRain() {
       const container = document.querySelector('.container');
       const heartIcons = ['❤️', '💖', '💕', '🌸', '✨'];
 
-      heartInterval = setInterval(() => {
+      setInterval(() => {
         const heart = document.createElement('div');
         heart.classList.add('heart-particle');
         heart.innerText = heartIcons[Math.floor(Math.random() * heartIcons.length)];
