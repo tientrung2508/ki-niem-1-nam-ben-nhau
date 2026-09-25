@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kỷ Niệm 1 Năm - Báu & Trang</title>
+  <title>Our Photograph - Báu & Trang</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      background: #0d0d11;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #0a0813;
+      font-family: 'Segoe UI', Arial, sans-serif;
       min-height: 100vh;
       display: flex;
       justify-content: center;
@@ -16,169 +16,273 @@
       overflow: hidden;
     }
 
-    /* Khung máy / Khung tranh */
-    .anime-card {
+    /* Màn hình hiển thị phong cách Film Vintage Hoàng Hôn */
+    .viewport {
       width: 100%;
       max-width: 420px;
       height: 680px;
-      /* Dùng ảnh anime hoàng hôn biển làm nền */
-      background: url('http://googleusercontent.com/generated_image_content/0') no-repeat center center/cover;
+      background: linear-gradient(to bottom, #cf6a57 0%, #e8a598 40%, #f7d6bf 65%, #2c4a6f 100%);
       border-radius: 20px;
       position: relative;
       overflow: hidden;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.6);
       border: 2px solid rgba(255, 255, 255, 0.3);
     }
 
-    /* Lớp phủ độ bóng để chữ và nút dễ nhìn hơn */
-    .overlay {
+    /* Mặt trời & Mây */
+    .sun {
       position: absolute;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0) 50%, rgba(0,0,0,0.5) 100%);
+      top: 170px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 110px;
+      height: 110px;
+      background: radial-gradient(circle, #fff 20%, #fbd588 60%, transparent 100%);
+      border-radius: 50%;
+      box-shadow: 0 0 50px #f4a261;
     }
 
-    /* Tiêu đề */
+    /* Sóng biển & Bãi cát */
+    .sea {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 240px;
+      background: linear-gradient(to bottom, #1d3557, #457b9d);
+    }
+    .wave {
+      position: absolute;
+      bottom: 120px;
+      width: 100%;
+      height: 12px;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      animation: waveMove 3s ease-in-out infinite alternate;
+    }
+    @keyframes waveMove {
+      from { transform: translateY(0); }
+      to { transform: translateY(6px); }
+    }
+
+    .sand {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 130px;
+      background: linear-gradient(to bottom, #e7c169, #b08940);
+      border-top-left-radius: 50% 25px;
+      border-top-right-radius: 50% 25px;
+    }
+
+    /* NHÂN VẬT ANIME */
+    .char-boy {
+      position: absolute;
+      bottom: 60px;
+      left: -100px;
+      width: 70px;
+      height: 140px;
+      transition: all 3s cubic-bezier(0.25, 1, 0.5, 1);
+      z-index: 5;
+    }
+
+    .char-girl {
+      position: absolute;
+      bottom: 60px;
+      right: 40px;
+      width: 70px;
+      height: 140px;
+      z-index: 4;
+    }
+
+    /* Mấy tấm ảnh kỷ niệm trên tay chàng trai */
+    .photo-stack {
+      position: absolute;
+      bottom: 105px;
+      left: -50px;
+      font-size: 32px;
+      transition: all 3s cubic-bezier(0.25, 1, 0.5, 1);
+      z-index: 6;
+      opacity: 0;
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+    }
+
+    /* Tiêu đề Lyric Mở Đầu */
     .title {
       position: absolute;
       top: 25px;
-      width: 100%;
+      width: 90%;
+      left: 5%;
       text-align: center;
-      color: #fff;
-      font-size: 1.3rem;
-      font-weight: bold;
-      text-shadow: 0 2px 8px rgba(0,0,0,0.7);
-      letter-spacing: 1px;
+      color: #ffffff;
+      font-size: 0.95rem;
+      font-style: italic;
+      font-weight: 500;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+      line-height: 1.4;
     }
 
-    /* Nút tương tác lãng mạn */
     .controls {
       position: absolute;
-      bottom: 30px;
+      bottom: 25px;
       width: 100%;
       text-align: center;
       z-index: 20;
     }
 
-    .btn-anime {
+    .btn-act {
       background: rgba(255, 255, 255, 0.25);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
       color: #fff;
       border: 1px solid rgba(255, 255, 255, 0.7);
-      padding: 14px 28px;
-      font-size: 1rem;
-      font-weight: 600;
+      padding: 12px 24px;
+      font-size: 0.95rem;
       border-radius: 30px;
       cursor: pointer;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
       transition: all 0.3s;
     }
 
-    .btn-anime:hover {
-      background: rgba(255, 255, 255, 0.4);
-      transform: scale(1.03);
-    }
-
-    /* Bức thư tình */
+    /* Khung thư tình (Bức thư kỷ niệm) */
     .letter-modal {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%) scale(0);
       width: 85%;
-      background: rgba(255, 255, 255, 0.92);
-      backdrop-filter: blur(15px);
-      -webkit-backdrop-filter: blur(15px);
-      padding: 25px;
-      border-radius: 20px;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
+      padding: 22px;
+      border-radius: 18px;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.4);
       text-align: center;
-      transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      transition: transform 0.5s ease;
       z-index: 30;
-      border: 1px solid rgba(255, 255, 255, 0.5);
     }
+    .letter-modal.open { transform: translate(-50%, -50%) scale(1); }
+    .letter-modal h2 { color: #d90429; font-size: 1.25rem; margin-bottom: 12px; }
+    .letter-modal p { font-size: 0.9rem; color: #333; line-height: 1.6; text-align: left; }
 
-    .letter-modal.open {
-      transform: translate(-50%, -50%) scale(1);
-    }
-
-    .letter-modal h2 { color: #e63946; font-size: 1.3rem; margin-bottom: 12px; }
-    .letter-modal p { font-size: 0.95rem; color: #333; line-height: 1.6; text-align: left; }
-
-    /* Hiệu ứng Mưa Trái Tim & Đom đóm sáng */
-    .heart {
+    /* Đốm sáng / Tấm ảnh nhỏ nhẹ nhàng hiện lên */
+    .photo-float {
       position: absolute;
-      color: #ff4d6d;
       font-size: 22px;
-      animation: dropHeart 3s linear infinite;
-      z-index: 10;
-      pointer-events: none;
-      text-shadow: 0 0 10px rgba(255, 77, 109, 0.8);
+      animation: floatUp 4s ease-out infinite;
+      z-index: 15;
+      opacity: 0;
     }
-
-    @keyframes dropHeart {
-      0% { transform: translateY(-20px) scale(0.8); opacity: 1; }
-      50% { opacity: 0.9; }
-      100% { transform: translateY(700px) scale(1.2); opacity: 0; }
+    @keyframes floatUp {
+      0% { transform: translateY(0) scale(0.6); opacity: 0; }
+      50% { opacity: 0.8; }
+      100% { transform: translateY(-120px) scale(1.1); opacity: 0; }
     }
   </style>
 </head>
 <body>
 
-  <div class="anime-card" id="card">
-    <div class="overlay"></div>
-    <div class="title">Our 1st Anniversary ❤️</div>
-
-    <div class="controls">
-      <button id="actionBtn" class="btn-anime" onclick="triggerEffect()">Chạm để tạo bất ngờ ✨</button>
+  <div class="viewport" id="stage">
+    <!-- Mở đầu: Dòng chữ Lyric trong ảnh -->
+    <div class="title" id="lyricHeader">
+      "Loving can hurt, loving can hurt sometimes...<br>But it's the only thing that I know"
     </div>
 
+    <div class="sun"></div>
+    <div class="sea"></div>
+    <div class="wave"></div>
+    <div class="sand"></div>
+
+    <!-- Nữ (Đứng chờ) -->
+    <div class="char-girl" id="girl">
+      <svg viewBox="0 0 100 200" width="70" height="140">
+        <circle cx="50" cy="35" r="18" fill="#3d231d"/>
+        <circle cx="50" cy="38" r="14" fill="#ffd1dc"/>
+        <path d="M 35,60 L 65,60 L 75,130 L 25,130 Z" fill="#ff85a1"/>
+        <line x1="42" y1="130" x2="42" y2="180" stroke="#ffd1dc" stroke-width="8"/>
+        <line x1="58" y1="130" x2="58" y2="180" stroke="#ffd1dc" stroke-width="8"/>
+      </svg>
+    </div>
+
+    <!-- Nam (Tiến đến) -->
+    <div class="char-boy" id="boy">
+      <svg viewBox="0 0 100 200" width="70" height="140">
+        <circle cx="50" cy="35" r="16" fill="#211510"/>
+        <circle cx="50" cy="38" r="14" fill="#ffd1dc"/>
+        <rect x="32" y="55" width="36" height="55" rx="5" fill="#4ea8de"/>
+        <line x1="42" y1="110" x2="42" y2="180" stroke="#1d2d44" stroke-width="9"/>
+        <line x1="58" y1="110" x2="58" y2="180" stroke="#1d2d44" stroke-width="9"/>
+      </svg>
+    </div>
+
+    <!-- Mấy tấm ảnh kỷ niệm trên tay -->
+    <div class="photo-stack" id="photos">🖼️📸</div>
+
+    <!-- Nút điều khiển -->
+    <div class="controls">
+      <button id="actBtn" class="btn-act" onclick="playScene()">Nhìn lại hành trình 365 ngày 📸</button>
+    </div>
+
+    <!-- Bước 2 (Đoạn Điệp khúc): Bức thư tình đúng nội dung trong ảnh -->
     <div id="letter" class="letter-modal">
-      <h2>Gửi Trang Yêu Vấu! 💌</h2>
+      <h2>Gửi Trang yêu vấu! 💌</h2>
       <p>
-        Chúc mừng kỷ niệm 1 năm ngày hai đứa mình bên nhau! <br><br>
-        Cảm ơn em đã cùng anh đi qua 365 ngày thật nhiều khoảnh khắc đáng nhớ. Mong rằng hành trình yêu thương của chúng mình sẽ mãi rực rỡ và ấm áp như buổi hoàng hôn này. Yêu em nhiều! ❤️
+        <i>'We keep this love in a photograph, we made these memories for ourselves.'</i><br><br>
+        Cảm ơn em đã cùng anh lưu giữ những khoảnh khắc đẹp nhất trong 365 ngày qua. Dù thời gian có trôi đi, anh vẫn sẽ luôn ở đây, nắm lấy tay em và cùng em viết tiếp những chương mới. Yêu em thật nhiều! ❤️
       </p>
     </div>
   </div>
 
-  <audio id="bgMusic" loop src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
+  <!-- Tự động phát file nhạc MP3 Photograph trên GitHub -->
+  <audio id="bgMusic" loop src="Ed Sheeran - Photograph (Lyrics) - 7clouds.mp3"></audio>
 
   <script>
     let step = 0;
 
-    function triggerEffect() {
-      const btn = document.getElementById('actionBtn');
+    function playScene() {
+      const boy = document.getElementById('boy');
+      const photos = document.getElementById('photos');
+      const btn = document.getElementById('actBtn');
       const letter = document.getElementById('letter');
       const music = document.getElementById('bgMusic');
 
-      // Tự động bật nhạc
+      // Phát bài nhạc Photograph
       music.play().catch(() => {});
 
       if (step === 0) {
-        // Kích hoạt hiệu ứng mưa trái tim rơi
-        startHeartRain();
-        btn.innerText = 'Mở thư tình của anh ✉️';
+        // Bước 1: Chàng trai tiến đến cùng mấy tấm ảnh kỷ niệm
+        boy.style.left = 'calc(100% - 150px)';
+        photos.style.opacity = '1';
+        photos.style.left = 'calc(100% - 115px)';
+
+        btn.innerText = 'Xem những khoảnh khắc kỷ niệm 🖼️';
         step = 1;
       } 
       else if (step === 1) {
-        // Hiện thư tình
+        // Trao ảnh & Tấm ảnh/trái tim mờ ảo hiện lên theo nhạc
+        photos.style.left = 'calc(100% - 90px)';
+        spawnFloatingMemories();
+
+        btn.innerText = 'Đọc thư tình kỷ niệm ✉️';
+        step = 2;
+      }
+      else if (step === 2) {
+        // Bước 2: Đoạn điệp khúc -> Mở bức thư tình chuẩn kịch bản
         letter.classList.add('open');
         btn.style.display = 'none';
       }
     }
 
-    function startHeartRain() {
-      const card = document.getElementById('card');
-      for (let i = 0; i < 20; i++) {
+    function spawnFloatingMemories() {
+      const stage = document.getElementById('stage');
+      const icons = ['🖼️', '📸', '✨', '❤️'];
+      for (let i = 0; i < 10; i++) {
         setTimeout(() => {
-          const heart = document.createElement('div');
-          heart.classList.add('heart');
-          heart.innerHTML = '💖';
-          heart.style.left = Math.random() * 90 + '%';
-          heart.style.animationDuration = (Math.random() * 2 + 2) + 's';
-          card.appendChild(heart);
-        }, i * 150);
+          const item = document.createElement('div');
+          item.classList.add('photo-float');
+          item.innerHTML = icons[Math.floor(Math.random() * icons.length)];
+          item.style.left = (20 + Math.random() * 60) + '%';
+          item.style.bottom = (150 + Math.random() * 100) + 'px';
+          stage.appendChild(item);
+        }, i * 300);
       }
     }
   </script>
