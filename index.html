@@ -48,19 +48,19 @@
       width: 100%; height: 100%;
       object-fit: cover;
       opacity: 0;
-      transition: opacity 1.5s ease-in-out, transform 6s ease-in-out;
+      transition: opacity 2s ease-in-out, transform 12s ease-in-out;
       transform: scale(1);
     }
 
     .bg-image.active {
       opacity: 0.88;
-      transform: scale(1.1);
+      transform: scale(1.12);
     }
 
     .overlay {
       position: absolute;
       top: 0; left: 0; width: 100%; height: 100%;
-      background: linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.75) 100%);
+      background: linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.8) 100%);
       z-index: 2;
     }
 
@@ -92,11 +92,11 @@
       font-size: 1.8rem;
       color: #ffccd5;
       text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
-      min-height: 80px;
+      min-height: 90px;
       padding: 0 10px;
       line-height: 1.4;
       opacity: 0;
-      transition: opacity 1s ease;
+      transition: opacity 1.2s ease;
     }
 
     .message-text.show {
@@ -166,7 +166,6 @@
 <body>
 
   <div class="container">
-    <!-- Khai báo chính xác tên file khớp với danh sách trên GitHub -->
     <div class="bg-image-wrapper">
       <img src="IMG_2288.png" class="bg-image active" id="img0" alt="Kỷ niệm">
       <img src="IMG_2294.JPEG" class="bg-image" id="img1" alt="Kỷ niệm" onerror="this.src='IMG_2294.jpeg'">
@@ -194,37 +193,33 @@
     </div>
   </div>
 
-  <!-- Trỏ chính xác đến file music.mp3 -->
   <audio id="bgMusic" src="music.mp3" preload="auto"></audio>
 
   <script>
     const messages = [
       "Thế là tròn 1 năm 2 đứa bên nhau.. ❤️",
-      "Những bữa ăn ngon, những nụ cười giòn 🍲✨",
-      "Bên em, ngày bình thường cũng thật ấm áp 🐱💕",
-      "Cùng em nhí nhố qua từng khoảnh khắc 😊🌸",
-      "Mỗi con đường mình cùng bước qua 🌹🌿",
-      "Mỗi nụ cười trao nhau là một niềm hạnh phúc ✨",
-      "Cảm ơn em đã cùng anh đi qua 365 ngày tuyệt vời! Yêu em thật nhiều ❤️"
+      "Cùng ăn những món thật ngon, chia sẻ bao tiếng cười ✨",
+      "Bên em, những điều bình thường nhất cũng hóa ấm áp 🌸",
+      "Cùng nhí nhố, cùng ghi lại những khoảnh khắc đáng yêu 💕",
+      "Mỗi con đường bước cùng nhau đều đong đầy kỷ niệm 🌹",
+      "Cảm ơn em đã cùng anh đi qua 365 ngày tuyệt vời! Happy 1st Anniversary! ✨",
+      "Chúng ta lại tiếp tục bước tiếp bên nhau trên đường đời sau này nữa nhé! ❤️"
     ];
 
     let currentIndex = 0;
     const totalImages = 7;
+    let slideTimer = null;
 
     function startStory() {
       const btn = document.getElementById('startBtn');
       const music = document.getElementById('bgMusic');
       const progressContainer = document.getElementById('progressContainer');
 
-      // Ép trình duyệt phát nhạc
-      music.play().then(() => {
-        console.log("Đã phát nhạc thành công!");
-      }).catch(err => console.log("Lỗi nhạc:", err));
+      music.play().catch(e => console.log("Lỗi nhạc:", e));
       
       btn.style.display = 'none';
       progressContainer.style.display = 'block';
 
-      // 1. Đếm từ 0 đến 365 ngày
       let currentDay = 0;
       const counterElement = document.getElementById('dayCounter');
       const messageElement = document.getElementById('finalMessage');
@@ -239,22 +234,28 @@
           messageElement.classList.add('show');
           startHeartRain();
 
-          // 2. Tự động đổi ảnh + lời nhắn mỗi 5 giây
-          setInterval(() => {
-            currentIndex = (currentIndex + 1) % totalImages;
-            changeStage(currentIndex);
-          }, 5000);
+          startLinearSlideshow();
         }
         counterElement.innerText = currentDay;
       }, 30);
 
-      // Cập nhật thanh thời lượng
       music.ontimeupdate = () => {
         const bar = document.getElementById('progressBar');
         if (music.duration) {
           bar.style.width = (music.currentTime / music.duration * 100) + '%';
         }
       };
+    }
+
+    function startLinearSlideshow() {
+      slideTimer = setInterval(() => {
+        if (currentIndex < totalImages - 1) {
+          currentIndex++;
+          changeStage(currentIndex);
+        } else {
+          clearInterval(slideTimer);
+        }
+      }, 22000); 
     }
 
     function changeStage(index) {
@@ -269,7 +270,7 @@
       setTimeout(() => {
         messageElement.innerText = messages[index] || messages[0];
         messageElement.classList.add('show');
-      }, 400);
+      }, 500);
     }
 
     function startHeartRain() {
@@ -286,7 +287,7 @@
 
         container.appendChild(heart);
         setTimeout(() => heart.remove(), 5500);
-      }, 350);
+      }, 400);
     }
   </script>
 </body>
