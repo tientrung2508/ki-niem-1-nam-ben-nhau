@@ -3,266 +3,235 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Our Photograph - Kỷ niệm 365 ngày</title>
+  <title>Kỷ Niệm 1 Năm Bên Nhau</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Montserrat:wght@300;400;600&display=swap');
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      background: #090a0f;
+      background: #050508;
       font-family: 'Montserrat', sans-serif;
       min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      color: #eaeaea;
       overflow: hidden;
+      color: #fff;
     }
 
-    /* Khung hình Cinematic Film */
-    .cinematic-card {
-      width: 100%;
-      max-width: 420px;
-      height: 700px;
-      background: linear-gradient(180deg, #181119 0%, #2a1b24 40%, #151821 100%);
-      border-radius: 16px;
+    /* Khung hiển thị giao diện */
+    .container {
       position: relative;
+      width: 100%;
+      max-width: 430px;
+      height: 720px;
+      border-radius: 24px;
       overflow: hidden;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.8);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: #000;
       display: flex;
       flex-direction: column;
+      align-items: center;
       justify-content: space-between;
-      padding: 30px 24px;
+      padding: 40px 20px;
     }
 
-    /* Hiệu ứng Phim Vintage Grain & Bụi phim */
-    .film-grain {
+    /* 3. Bức ảnh anime phóng to / thu nhỏ mượt mà */
+    .bg-image-wrapper {
       position: absolute;
       top: 0; left: 0; width: 100%; height: 100%;
-      background: radial-gradient(circle, rgba(255,215,180,0.05) 0%, rgba(0,0,0,0.4) 100%);
-      pointer-events: none;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .bg-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.85;
+      /* Hiệu ứng Zoom in/out liên tục nhẹ nhàng */
+      animation: pulseZoom 8s ease-in-out infinite alternate;
+      transform-origin: center center;
+    }
+
+    @keyframes pulseZoom {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.12); }
+    }
+
+    /* Lớp phủ làm dịu ánh sáng để thấy rõ chữ */
+    .overlay {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.7) 100%);
       z-index: 2;
     }
 
-    /* Đốm sáng Bokeh trôi chậm */
-    .bokeh {
-      position: absolute;
-      width: 120px;
-      height: 120px;
-      background: radial-gradient(circle, rgba(244, 162, 97, 0.15) 0%, transparent 70%);
-      border-radius: 50%;
-      animation: floatBokeh 12s infinite alternate ease-in-out;
-      pointer-events: none;
-    }
-    .bokeh-1 { top: 10%; left: -20px; animation-duration: 14s; }
-    .bokeh-2 { bottom: 20%; right: -30px; animation-duration: 10s; }
-
-    @keyframes floatBokeh {
-      0% { transform: translate(0, 0) scale(1); opacity: 0.3; }
-      100% { transform: translate(30px, -40px) scale(1.3); opacity: 0.7; }
-    }
-
-    /* Header & Lyric */
-    .header-lyric {
-      text-align: center;
-      z-index: 5;
-      margin-top: 10px;
-      min-height: 80px;
-    }
-    .lyric-quote {
-      font-family: 'Playfair Display', serif;
-      font-style: italic;
-      font-size: 1rem;
-      color: #e0a96d;
-      line-height: 1.6;
-      opacity: 0.9;
-      transition: opacity 1s ease;
-    }
-
-    /* Khung ảnh Polaroid Kỷ niệm chính */
-    .photo-stage {
+    /* Khu vực hiển thị đếm số ngày và lời nhắn */
+    .content-box {
       position: relative;
-      width: 100%;
-      height: 320px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 5;
+      z-index: 10;
+      text-align: center;
+      margin-top: 20px;
     }
 
-    .polaroid-frame {
-      width: 230px;
-      background: #f4f1ea;
-      padding: 15px 15px 45px 15px;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.6);
-      transform: rotate(-2deg);
-      transition: all 1.2s cubic-bezier(0.25, 1, 0.5, 1);
-      position: absolute;
-      border-radius: 2px;
-    }
-    .polaroid-img {
-      width: 100%;
-      height: 220px;
-      background: #2b262d;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: #8a7b8c;
-      font-size: 3rem;
-      overflow: hidden;
-      position: relative;
-    }
-    .polaroid-caption {
-      font-family: 'Playfair Display', serif;
-      font-size: 0.85rem;
-      color: #4a3e3d;
-      text-align: center;
-      margin-top: 12px;
-      letter-spacing: 1px;
-    }
-
-    /* Bức thư tình ẩn sâu lắng */
-    .letter-overlay {
-      position: absolute;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(15, 12, 18, 0.92);
-      backdrop-filter: blur(10px);
-      z-index: 20;
-      opacity: 0;
-      visibility: hidden;
-      transition: all 1.2s ease;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 35px;
-    }
-    .letter-overlay.active {
-      opacity: 1;
-      visibility: visible;
-    }
-    .letter-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.4rem;
-      color: #e0a96d;
-      margin-bottom: 20px;
-      text-align: center;
-    }
-    .letter-body {
-      font-size: 0.9rem;
-      color: #cccccc;
-      line-height: 1.8;
-      font-weight: 300;
-    }
-    .letter-body i {
-      color: #e0a96d;
-      display: block;
-      margin-bottom: 15px;
-    }
-
-    /* Nút bấm tinh tế */
-    .action-area {
-      text-align: center;
-      z-index: 5;
-      margin-bottom: 10px;
-    }
-    .btn-cinematic {
-      background: transparent;
-      color: #d4a373;
-      border: 1px solid #d4a373;
-      padding: 12px 28px;
-      font-size: 0.85rem;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: all 0.5s ease;
+    .counter-number {
+      font-size: 3.8rem;
+      font-weight: 700;
+      color: #fff;
+      text-shadow: 0 4px 15px rgba(0, 0, 0, 0.8), 0 0 20px rgba(255, 182, 193, 0.6);
       font-family: 'Montserrat', sans-serif;
     }
-    .btn-cinematic:hover {
-      background: rgba(212, 163, 115, 0.15);
-      box-shadow: 0 0 15px rgba(212, 163, 115, 0.3);
+
+    .counter-label {
+      font-size: 1.1rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 15px;
+      color: #ffe0e6;
+      opacity: 0.9;
+    }
+
+    .message-text {
+      font-family: 'Dancing Script', cursive;
+      font-size: 2rem;
+      color: #ffccd5;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 1.5s ease;
+    }
+
+    .message-text.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Nút bắt đầu */
+    .start-btn {
+      position: relative;
+      z-index: 10;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      color: #fff;
+      padding: 14px 32px;
+      font-size: 1rem;
+      border-radius: 30px;
+      cursor: pointer;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+      transition: all 0.4s;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .start-btn:hover {
+      background: rgba(255, 255, 255, 0.4);
+      transform: scale(1.05);
+    }
+
+    /* 2. Hiệu ứng Trái tim rơi xuống */
+    .heart-particle {
+      position: absolute;
+      top: -30px;
+      color: #ff4d6d;
+      font-size: 20px;
+      z-index: 5;
+      user-select: none;
+      pointer-events: none;
+      animation: fall linear forwards;
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(750px) rotate(360deg);
+        opacity: 0;
+      }
     }
   </style>
 </head>
 <body>
 
-  <div class="cinematic-card">
-    <div class="film-grain"></div>
-    <div class="bokeh bokeh-1"></div>
-    <div class="bokeh bokeh-2"></div>
+  <div class="container">
+    <!-- Hình nền anime với tên file IMG_2288.png -->
+    <div class="bg-image-wrapper">
+      <img src="IMG_2288.png" class="bg-image" alt="Anime Hoàng Hôn" id="animeBg" onerror="this.src='https://raw.githubusercontent.com/tientrung2508/ki-niem-1-nam-ben-nhau/main/IMG_2288.png'">
+    </div>
+    <div class="overlay"></div>
 
-    <!-- Đoạn Lyric lắng đọng -->
-    <div class="header-lyric">
-      <div class="lyric-quote" id="lyricText">
-        "Loving can hurt, loving can hurt sometimes...<br>But it's the only thing that I know"
-      </div>
+    <!-- Nội dung chạy chữ đếm ngày -->
+    <div class="content-box">
+      <div class="counter-number" id="dayCounter">0</div>
+      <div class="counter-label" id="counterLabel">NGÀY</div>
+      <div class="message-text" id="finalMessage">Thế là tròn 1 năm 2 đứa bên nhau.. ❤️</div>
     </div>
 
-    <!-- Khung ảnh kỷ niệm Polaroid -->
-    <div class="photo-stage">
-      <div class="polaroid-frame" id="polaroid">
-        <div class="polaroid-img" id="photoBox">
-          <span>📷</span>
-        </div>
-        <div class="polaroid-caption" id="photoCaption">365 Days of Memories</div>
-      </div>
-    </div>
-
-    <!-- Nút điều khiển tương tác chậm rãi -->
-    <div class="action-area">
-      <button class="btn-cinematic" id="mainBtn" onclick="nextChapter()">Nhìn lại hành trình 365 ngày</button>
-    </div>
-
-    <!-- Thư tình lắng đọng -->
-    <div class="letter-overlay" id="letter">
-      <div class="letter-title">Gửi Trang yêu vấu</div>
-      <div class="letter-body">
-        <i>"We keep this love in a photograph, we made these memories for ourselves."</i>
-        Cảm ơn em đã cùng anh lưu giữ những khoảnh khắc đẹp nhất trong 365 ngày qua.<br><br>
-        Dù thời gian có trôi đi, anh vẫn sẽ luôn ở đây, nắm lấy tay em và cùng em viết tiếp những chương mới.<br><br>
-        <strong>Yêu em thật nhiều! ❤️</strong>
-      </div>
-    </div>
+    <!-- Nút bắt đầu -->
+    <button class="start-btn" id="startBtn" onclick="startStory()">Xem kỷ niệm ✨</button>
   </div>
 
+  <!-- Nhạc đúng tên file MP3 trên GitHub -->
   <audio id="bgMusic" loop src="Ed Sheeran - Photograph (Lyrics) - 7clouds.mp3"></audio>
 
   <script>
-    let step = 0;
+    let heartInterval;
 
-    function nextChapter() {
+    function startStory() {
+      const btn = document.getElementById('startBtn');
       const music = document.getElementById('bgMusic');
-      const lyric = document.getElementById('lyricText');
-      const polaroid = document.getElementById('polaroid');
-      const photoBox = document.getElementById('photoBox');
-      const photoCaption = document.getElementById('photoCaption');
-      const btn = document.getElementById('mainBtn');
-      const letter = document.getElementById('letter');
-
-      // Phát nhạc nhạc mộc Photograph
+      
+      // Cho nhạc chạy
       music.play().catch(() => {});
+      btn.style.display = 'none';
 
-      if (step === 0) {
-        // Chuyển sang chương 1: Kỷ niệm
-        lyric.style.opacity = '0';
+      // 1. Chạy chữ đếm từ 1 đến 365 ngày
+      let currentDay = 0;
+      const targetDay = 365;
+      const counterElement = document.getElementById('dayCounter');
+      const messageElement = document.getElementById('finalMessage');
+
+      const counterInterval = setInterval(() => {
+        currentDay += 5;
+        if (currentDay >= targetDay) {
+          currentDay = targetDay;
+          clearInterval(counterInterval);
+
+          // Khi đạt 365 ngày -> Hiện dòng chữ
+          setTimeout(() => {
+            messageElement.classList.add('show');
+          }, 300);
+
+          // 2. Kích hoạt hiệu ứng tim rơi
+          startHeartRain();
+        }
+        counterElement.innerText = currentDay;
+      }, 30);
+    }
+
+    // 2. Hàm tạo hiệu ứng tim rơi
+    function startHeartRain() {
+      const container = document.querySelector('.container');
+      const heartIcons = ['❤️', '💖', '💕', '🌸', '✨'];
+
+      heartInterval = setInterval(() => {
+        const heart = document.createElement('div');
+        heart.classList.add('heart-particle');
+        heart.innerText = heartIcons[Math.floor(Math.random() * heartIcons.length)];
+        
+        heart.style.left = Math.random() * 90 + '%';
+        heart.style.animationDuration = (Math.random() * 3 + 2.5) + 's';
+        heart.style.fontSize = (Math.random() * 12 + 16) + 'px';
+
+        container.appendChild(heart);
+
         setTimeout(() => {
-          lyric.innerHTML = '"We keep this love in a photograph...<br>Where time is forever frozen"';
-          lyric.style.opacity = '1';
-        }, 500);
-
-        polaroid.style.transform = 'rotate(2deg) scale(1.05)';
-        photoBox.innerHTML = '🖼️';
-        photoCaption.innerText = 'Our First Memories';
-
-        btn.innerText = 'Lật mở kỷ niệm ✉️';
-        step = 1;
-      } 
-      else if (step === 1) {
-        // Chuyển sang chương 2: Mở thư tình lắng đọng
-        letter.classList.add('active');
-        btn.style.display = 'none';
-      }
+          heart.remove();
+        }, 5500);
+      }, 300);
     }
   </script>
 </body>
