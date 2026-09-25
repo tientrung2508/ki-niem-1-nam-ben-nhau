@@ -36,7 +36,6 @@
       padding: 30px 20px;
     }
 
-    /* Bức ảnh trình chiếu */
     .bg-image-wrapper {
       position: absolute;
       top: 0; left: 0; width: 100%; height: 100%;
@@ -65,7 +64,6 @@
       z-index: 2;
     }
 
-    /* Nội dung đếm ngày và thông điệp */
     .content-box {
       position: relative;
       z-index: 10;
@@ -105,7 +103,6 @@
       opacity: 1;
     }
 
-    /* Controls */
     .controls-area {
       position: relative;
       z-index: 10;
@@ -150,7 +147,6 @@
       transition: width 0.3s linear;
     }
 
-    /* Trái tim rơi */
     .heart-particle {
       position: absolute;
       top: -30px;
@@ -172,12 +168,12 @@
   <div class="container">
     <div class="bg-image-wrapper">
       <img src="IMG_2288.png" class="bg-image active" id="img0" alt="Kỷ niệm">
-      <img src="IMG_2294.jpeg" class="bg-image" id="img1" alt="Kỷ niệm" onerror="this.src='IMG_2294.JPEG'">
-      <img src="IMG_2295.jpeg" class="bg-image" id="img2" alt="Kỷ niệm" onerror="this.src='IMG_2295.JPEG'">
-      <img src="IMG_2296.jpeg" class="bg-image" id="img3" alt="Kỷ niệm" onerror="this.src='IMG_2296.JPEG'">
-      <img src="IMG_2297.jpeg" class="bg-image" id="img4" alt="Kỷ niệm" onerror="this.src='IMG_2297.JPEG'">
-      <img src="IMG_2298.jpeg" class="bg-image" id="img5" alt="Kỷ niệm" onerror="this.src='IMG_2298.JPEG'">
-      <img src="IMG_2299.jpeg" class="bg-image" id="img6" alt="Kỷ niệm" onerror="this.src='IMG_2299.JPEG'">
+      <img src="IMG_2294.jpeg" class="bg-image" id="img1" alt="Kỷ niệm">
+      <img src="IMG_2295.jpeg" class="bg-image" id="img2" alt="Kỷ niệm">
+      <img src="IMG_2296.jpeg" class="bg-image" id="img3" alt="Kỷ niệm">
+      <img src="IMG_2297.jpeg" class="bg-image" id="img4" alt="Kỷ niệm">
+      <img src="IMG_2298.jpeg" class="bg-image" id="img5" alt="Kỷ niệm">
+      <img src="IMG_2299.jpeg" class="bg-image" id="img6" alt="Kỷ niệm">
     </div>
     <div class="overlay"></div>
 
@@ -197,7 +193,10 @@
     </div>
   </div>
 
-  <audio id="bgMusic" src="Ed Sheeran - Photograph (Lyrics) - 7clouds.mp3"></audio>
+  <audio id="bgMusic" preload="auto">
+    <source src="music.mp3" type="audio/mpeg">
+    <source src="Ed%20Sheeran%20-%20Photograph%20(Lyrics)%20-%207clouds.mp3" type="audio/mpeg">
+  </audio>
 
   <script>
     const messages = [
@@ -212,20 +211,19 @@
 
     let currentIndex = 0;
     const totalImages = 7;
-    let slideInterval;
 
     function startStory() {
       const btn = document.getElementById('startBtn');
       const music = document.getElementById('bgMusic');
       const progressContainer = document.getElementById('progressContainer');
 
-      // Phát nhạc
+      // Tự động phát nhạc khi ấn nút
       music.play().catch(e => console.log("Lỗi phát nhạc:", e));
       
       btn.style.display = 'none';
       progressContainer.style.display = 'block';
 
-      // 1. Hiệu ứng đếm số ngày
+      // 1. Chạy đếm số ngày
       let currentDay = 0;
       const counterElement = document.getElementById('dayCounter');
       const messageElement = document.getElementById('finalMessage');
@@ -240,8 +238,11 @@
           messageElement.classList.add('show');
           startHeartRain();
 
-          // 2. Bắt đầu tự động chuyển ảnh mỗi 5.5 giây
-          startSlideshow();
+          // 2. Chuyển ảnh liên tục cứ mỗi 5 giây
+          setInterval(() => {
+            currentIndex = (currentIndex + 1) % totalImages;
+            changeStage(currentIndex);
+          }, 5000);
         }
         counterElement.innerText = currentDay;
       }, 30);
@@ -253,14 +254,6 @@
           bar.style.width = (music.currentTime / music.duration * 100) + '%';
         }
       };
-    }
-
-    function startSlideshow() {
-      // Tự động chuyển hình tiếp theo sau mỗi 5.5s độc lập
-      slideInterval = setInterval(() => {
-        currentIndex = (currentIndex + 1) % totalImages;
-        changeStage(currentIndex);
-      }, 5500);
     }
 
     function changeStage(index) {
