@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kỷ Niệm 1 Năm - Báu & Trang</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      background: linear-gradient(135deg, #ffe6e9 0%, #ffb6c1 100%);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+      color: #4a4a4a;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 450px;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 25px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      position: relative;
+    }
+
+    h1 {
+      color: #e63946;
+      font-size: 1.6rem;
+      margin-bottom: 8px;
+    }
+
+    p.subtitle {
+      font-size: 0.95rem;
+      color: #777;
+      margin-bottom: 20px;
+    }
+
+    /* Khung hoạt họa */
+    .scene {
+      width: 100%;
+      height: 180px;
+      background: #fff0f3;
+      border-radius: 15px;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 20px;
+      border: 2px dashed #ffb6c1;
+    }
+
+    .character {
+      font-size: 40px;
+      position: absolute;
+      bottom: 20px;
+      transition: all 0.5s ease;
+    }
+
+    #boy {
+      left: 10px;
+    }
+
+    #girl {
+      right: 20px;
+    }
+
+    #flower {
+      position: absolute;
+      font-size: 24px;
+      display: none;
+      bottom: 45px;
+      left: 50px;
+      transition: all 0.5s ease;
+    }
+
+    /* Nút tương tác */
+    .btn {
+      background-color: #e63946;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      font-size: 1rem;
+      border-radius: 25px;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(230, 57, 70, 0.3);
+      transition: transform 0.2s;
+    }
+
+    .btn:active {
+      transform: scale(0.95);
+    }
+
+    /* Khung lời nhắn */
+    .message-box {
+      margin-top: 20px;
+      display: none;
+      animation: fadeIn 1s forwards;
+      text-align: left;
+      background: #fff;
+      padding: 15px;
+      border-radius: 12px;
+      border-left: 4px solid #e63946;
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Happy 1st Anniversary! ❤️</h1>
+    <p class="subtitle">29/09 - Hành trình của chúng mình</p>
+
+    <div class="scene">
+      <div id="boy" class="character">👦</div>
+      <div id="flower">🌹</div>
+      <div id="girl" class="character">👧</div>
+    </div>
+
+    <button id="actionBtn" class="btn" onclick="startStory()">Chạm vào đây nè ❤️</button>
+
+    <div id="messageBox" class="message-box">
+      <strong>Gửi Trang yêu quý,</strong><br>
+      Thế là tròn 1 năm chúng mình nắm tay nhau đi qua biết bao nhiêu kỷ niệm. Cảm ơn em vì đã luôn ở bên cạnh, lắng nghe và mang lại nhiều niềm vui cho anh.<br><br>
+      Chặng đường phía trước còn dài, mong rằng chúng mình vẫn sẽ nắm chặt tay nhau như ngày đầu tiên em nhé! Chúc mừng kỷ niệm 1 năm của chúng mình! ✨
+    </div>
+  </div>
+
+  <!-- Nhạc nền (Thay URL nhạc tại đây) -->
+  <audio id="bgMusic" loop src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
+
+  <script>
+    let step = 0;
+
+    function startStory() {
+      const boy = document.getElementById('boy');
+      const flower = document.getElementById('flower');
+      const btn = document.getElementById('actionBtn');
+      const msg = document.getElementById('messageBox');
+      const music = document.getElementById('bgMusic');
+
+      // Bật nhạc
+      music.play().catch(() => console.log("Cần tương tác để phát nhạc"));
+
+      if (step === 0) {
+        // Nam tiến lại gần nữ
+        boy.style.left = 'calc(100% - 110px)';
+        flower.style.display = 'block';
+        flower.style.left = 'calc(100% - 90px)';
+        btn.innerText = 'Trao hoa cho Trang 🌹';
+        step = 1;
+      } else if (step === 1) {
+        // Trao hoa
+        flower.style.left = 'calc(100% - 60px)';
+        btn.innerText = 'Đọc thư anh viết ✉️';
+        step = 2;
+      } else if (step === 2) {
+        // Hiện thư nhắn
+        msg.style.display = 'block';
+        btn.style.display = 'none';
+      }
+    }
+  </script>
+</body>
+</html>
