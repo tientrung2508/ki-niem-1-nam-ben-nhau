@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Our Love Journey - Báu & Trang</title>
+  <title>Kỷ Niệm 1 Năm - Báu & Trang</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       background: #111;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Segoe UI', Arial, sans-serif;
       min-height: 100vh;
       display: flex;
       justify-content: center;
@@ -16,185 +16,153 @@
       overflow: hidden;
     }
 
-    /* Khung máy chơi game / Màn hình game */
-    .game-card {
-      width: 95%;
+    /* Khung tranh nghệ thuật */
+    .art-card {
+      width: 100%;
       max-width: 420px;
-      height: 600px;
-      background: linear-gradient(to bottom, #87CEEB 0%, #E0F6FF 60%, #e0c3fc 100%);
+      height: 650px;
+      /* Phối màu hoàng hôn bãi biển kiểu Ghibli */
+      background: linear-gradient(to bottom, #ff7e5f 0%, #feb47b 35%, #ffeccc 60%, #4a90e2 100%);
       border-radius: 20px;
       position: relative;
       overflow: hidden;
       box-shadow: 0 15px 35px rgba(0,0,0,0.5);
-      border: 4px solid #fff;
+      border: 2px solid #ffffff40;
     }
 
-    /* Tiêu đề & Mây */
-    .header-title {
-      text-align: center;
-      margin-top: 15px;
-      color: #d62828;
-      font-weight: bold;
-      text-shadow: 1px 1px 2px #fff;
-      font-size: 1.2rem;
-      z-index: 10;
-      position: relative;
-    }
-
-    /* Mây trôi */
-    .cloud {
+    /* Mặt trời hoàng hôn */
+    .sun {
       position: absolute;
-      font-size: 30px;
-      opacity: 0.8;
-      animation: moveCloud 20s linear infinite;
-    }
-    @keyframes moveCloud {
-      from { left: -50px; }
-      to { left: 450px; }
+      top: 180px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120px;
+      height: 120px;
+      background: radial-gradient(circle, #fff 0%, #ffeb3b 60%, transparent 100%);
+      border-radius: 50%;
+      box-shadow: 0 0 40px #ffeb3b;
     }
 
-    /* Bối cảnh con đường */
-    .world {
+    /* Sóng biển & Bờ cát */
+    .ocean {
       position: absolute;
       bottom: 0;
       width: 100%;
-      height: 220px;
+      height: 250px;
+      background: linear-gradient(to bottom, #2b5876 0%, #4e4376 100%);
     }
-    
-    .grass {
-      position: absolute;
-      bottom: 60px;
-      width: 100%;
-      height: 20px;
-      background: #73a942;
-    }
-
-    .road {
+    .sand {
       position: absolute;
       bottom: 0;
       width: 100%;
-      height: 60px;
-      background: #52b788;
-      border-top: 4px dashed #fff;
+      height: 120px;
+      background: linear-gradient(to bottom, #e2b078 0%, #a87948 100%);
+      border-top-left-radius: 50% 20px;
+      border-top-right-radius: 50% 20px;
     }
 
-    /* Cây cối bên đường */
-    .tree {
+    /* Đồ họa Đôi tình nhân SVG (Bóng silhouettes lãng mạn) */
+    .couple-container {
       position: absolute;
-      bottom: 80px;
-      font-size: 45px;
-    }
-
-    /* Nhân vật & Vật phẩm */
-    .char {
-      position: absolute;
-      bottom: 65px;
-      font-size: 42px;
-      transition: all 0.8s ease-in-out;
+      bottom: 70px;
+      left: -120px;
+      width: 120px;
+      transition: all 4s cubic-bezier(0.25, 1, 0.5, 1);
       z-index: 5;
     }
 
-    #boy { left: 20px; }
-    #girl { right: 30px; }
-    #flower {
-      position: absolute;
-      bottom: 80px;
-      font-size: 25px;
-      display: none;
-      z-index: 6;
-      transition: all 0.5s;
-    }
-
-    /* Nút bấm chơi game */
+    /* Nút bấm tương tác */
     .controls {
       position: absolute;
-      bottom: 15px;
+      bottom: 25px;
       width: 100%;
       text-align: center;
       z-index: 20;
     }
 
-    .btn-game {
-      background: #ff4d6d;
-      color: white;
-      border: none;
-      padding: 12px 25px;
+    .btn-romantic {
+      background: rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(10px);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.6);
+      padding: 14px 28px;
       font-size: 1rem;
-      font-weight: bold;
       border-radius: 30px;
-      box-shadow: 0 5px 0 #c77dff, 0 8px 15px rgba(0,0,0,0.3);
       cursor: pointer;
-      transition: all 0.1s;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      transition: all 0.3s;
     }
-    .btn-game:active {
-      transform: translateY(4px);
-      box-shadow: 0 1px 0 #c77dff;
+    .btn-romantic:hover {
+      background: rgba(255, 255, 255, 0.4);
     }
 
-    /* Lời nhắn / Thư tình */
+    /* Bức thư tình nghệ thuật */
     .letter-modal {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%) scale(0);
       width: 85%;
-      background: rgba(255, 255, 255, 0.95);
-      padding: 20px;
-      border-radius: 15px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-      border: 2px solid #ff4d6d;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(10px);
+      padding: 25px;
+      border-radius: 18px;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.3);
       text-align: center;
-      transition: transform 0.5s ease;
+      transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       z-index: 30;
     }
     .letter-modal.open {
       transform: translate(-50%, -50%) scale(1);
     }
-    .letter-modal h2 { color: #ff4d6d; font-size: 1.3rem; margin-bottom: 10px; }
-    .letter-modal p { font-size: 0.95rem; color: #444; line-height: 1.5; text-align: left; }
+    .letter-modal h2 { color: #d94b4b; font-size: 1.4rem; margin-bottom: 12px; }
+    .letter-modal p { font-size: 0.95rem; color: #444; line-height: 1.6; text-align: left; }
 
-    /* Mưa trái tim */
-    .heart {
+    /* Chim hải âu bay */
+    .bird {
       position: absolute;
-      color: #ff4d6d;
-      font-size: 20px;
-      animation: drop 2.5s linear infinite;
-      z-index: 15;
+      color: rgba(255,255,255,0.7);
+      font-size: 18px;
+      animation: fly 12s linear infinite;
     }
-    @keyframes drop {
-      0% { transform: translateY(-20px); opacity: 1; }
-      100% { transform: translateY(600px); opacity: 0; }
+    @keyframes fly {
+      from { left: -30px; transform: translateY(0); }
+      to { left: 450px; transform: translateY(-30px); }
     }
   </style>
 </head>
 <body>
 
-  <div class="game-card">
-    <div class="header-title">LEVEL 1: 365 DAYS TOGETHER ❤️</div>
+  <div class="art-card">
+    <div class="sun"></div>
     
-    <div class="cloud" style="top: 40px;">☁️</div>
-    <div class="cloud" style="top: 80px; animation-delay: -10s;">☁️</div>
+    <div class="bird" style="top: 80px; animation-delay: 0s;">🕊️</div>
+    <div class="bird" style="top: 120px; animation-delay: -4s;">🕊️</div>
 
-    <div class="world">
-      <div class="tree" style="left: 10px;">🌳</div>
-      <div class="tree" style="right: 10px;">🌸</div>
-      <div class="grass"></div>
-      <div class="road"></div>
+    <div class="ocean"></div>
+    <div class="sand"></div>
+
+    <div id="couple" class="couple-container">
+      <svg viewBox="0 0 100 120" width="100" height="120">
+        <path d="M 30,40 Q 30,20 40,20 Q 50,20 50,40 L 48,70 L 38,110 L 32,110 L 42,70 L 30,70 Z" fill="#2c1e21"/>
+        <path d="M 60,45 Q 60,28 68,28 Q 76,28 76,45 L 72,75 L 78,110 L 72,110 L 66,78 L 58,78 Z" fill="#2c1e21"/>
+        <path d="M 60,55 L 78,80 L 54,80 Z" fill="#2c1e21"/>
+        <path d="M 45,50 Q 52,60 58,52" stroke="#2c1e21" stroke-width="4" fill="none"/>
+        <circle cx="26" cy="48" r="6" fill="#ff6b6b"/>
+        <circle cx="22" cy="52" r="5" fill="#ffa8a8"/>
+        <circle cx="28" cy="54" r="5" fill="#ff8787"/>
+      </svg>
     </div>
 
-    <div id="boy" class="char">🏃‍♂️</div>
-    <div id="flower">💐</div>
-    <div id="girl" class="char">🚶‍♀️</div>
-
     <div class="controls">
-      <button id="gameBtn" class="btn-game" onclick="nextStep()">Bấm để bắt đầu ▶️</button>
+      <button id="actionBtn" class="btn-romantic" onclick="walkTogether()">Chạm vào đây nè ❤️</button>
     </div>
 
     <div id="letter" class="letter-modal">
       <h2>Gửi Trang Yêu Vấu! 💌</h2>
       <p>
         Chúc mừng kỷ niệm 1 năm ngày hai đứa mình bên nhau! <br><br>
-        Cảm ơn em đã cùng anh đi qua 365 ngày tràn ngập niềm vui và hạnh phúc. Mong rằng chuyến xe tình yêu này sẽ luôn kéo dài và chúng mình sẽ tiếp tục nắm tay nhau đi qua thêm nhiều năm nữa nhé! ❤️
+        Cảm ơn em vì đã đến, cùng anh trải qua 365 ngày thật đẹp. Giống như buổi hoàng hôn ấm áp này, mong rằng chúng mình sẽ tiếp tục nắm tay nhau đi qua thật nhiều chặng đường phía trước nhé! ❤️
       </p>
     </div>
   </div>
@@ -202,69 +170,27 @@
   <audio id="bgMusic" loop src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
 
   <script>
-    let currentStep = 0;
+    let step = 0;
 
-    function nextStep() {
-      const boy = document.getElementById('boy');
-      const girl = document.getElementById('girl');
-      const flower = document.getElementById('flower');
-      const btn = document.getElementById('gameBtn');
+    function walkTogether() {
+      const couple = document.getElementById('couple');
+      const btn = document.getElementById('actionBtn');
       const letter = document.getElementById('letter');
       const music = document.getElementById('bgMusic');
 
-      // Bật nhạc
+      // Tự động bật nhạc nền
       music.play().catch(() => {});
 
-      if (currentStep === 0) {
-        // Nam đi tới gần nữ
-        boy.style.left = 'calc(100% - 130px)';
-        boy.innerHTML = '🚶‍♂️';
-        btn.innerText = 'Tặng hoa cho Trang 💐';
-        currentStep = 1;
+      if (step === 0) {
+        // Cặp đôi dạo bước ra giữa bãi biển
+        couple.style.left = 'calc(50% - 50px)';
+        btn.innerText = 'Đọc lời chúc của anh ✉️';
+        step = 1;
       } 
-      else if (currentStep === 1) {
-        // Tặng hoa
-        flower.style.display = 'block';
-        flower.style.left = 'calc(100% - 95px)';
-        btn.innerText = 'Nắm tay nhau đi tiếp 👫';
-        currentStep = 2;
-      } 
-      else if (currentStep === 2) {
-        // Nam và nữ nắm tay nhau đi về phía trước
-        flower.style.display = 'none';
-        boy.style.left = 'calc(100% - 90px)';
-        girl.style.right = '20px';
-        
-        // Đổi nhân vật thành cặp đôi nắm tay
-        setTimeout(() => {
-          boy.style.display = 'none';
-          girl.innerHTML = '👩‍❤️‍👨';
-          girl.style.right = '40px';
-        }, 500);
-
-        // Tạo hiệu ứng tim rơi
-        createHearts();
-
-        btn.innerText = 'Mở thư tình ✉️';
-        currentStep = 3;
-      } 
-      else if (currentStep === 3) {
-        // Mở thư
+      else if (step === 1) {
+        // Hiện thư tình lãng mạn
         letter.classList.add('open');
         btn.style.display = 'none';
-      }
-    }
-
-    function createHearts() {
-      for (let i = 0; i < 15; i++) {
-        setTimeout(() => {
-          const heart = document.createElement('div');
-          heart.classList.add('heart');
-          heart.innerHTML = '❤️';
-          heart.style.left = Math.random() * 100 + '%';
-          heart.style.animationDuration = (Math.random() * 2 + 1.5) + 's';
-          document.querySelector('.game-card').appendChild(heart);
-        }, i * 200);
       }
     }
   </script>
