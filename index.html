@@ -36,6 +36,7 @@
       padding: 30px 20px;
     }
 
+    /* Bức ảnh trình chiếu */
     .bg-image-wrapper {
       position: absolute;
       top: 0; left: 0; width: 100%; height: 100%;
@@ -60,10 +61,11 @@
     .overlay {
       position: absolute;
       top: 0; left: 0; width: 100%; height: 100%;
-      background: linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.8) 100%);
+      background: linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.85) 100%);
       z-index: 2;
     }
 
+    /* Nội dung hiển thị */
     .content-box {
       position: relative;
       z-index: 10;
@@ -92,7 +94,7 @@
       font-size: 1.8rem;
       color: #ffccd5;
       text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
-      min-height: 90px;
+      min-height: 95px;
       padding: 0 10px;
       line-height: 1.4;
       opacity: 0;
@@ -103,6 +105,7 @@
       opacity: 1;
     }
 
+    /* Controls */
     .controls-area {
       position: relative;
       z-index: 10;
@@ -147,6 +150,7 @@
       transition: width 0.3s linear;
     }
 
+    /* Trái tim rơi */
     .heart-particle {
       position: absolute;
       top: -30px;
@@ -193,7 +197,8 @@
     </div>
   </div>
 
-  <audio id="bgMusic" src="music.mp3" preload="auto"></audio>
+  <!-- Thẻ phát nhạc tối ưu hóa chuẩn file music.mp3 -->
+  <audio id="bgMusic" src="music.mp3" preload="auto" playsinline></audio>
 
   <script>
     const messages = [
@@ -215,11 +220,17 @@
       const music = document.getElementById('bgMusic');
       const progressContainer = document.getElementById('progressContainer');
 
-      music.play().catch(e => console.log("Lỗi nhạc:", e));
+      // Đảm bảo trình duyệt kích hoạt âm thanh ngay khi người dùng chạm nút
+      music.play().then(() => {
+        console.log("Phát nhạc thành công!");
+      }).catch(err => {
+        console.log("Lỗi tự động phát nhạc:", err);
+      });
       
       btn.style.display = 'none';
       progressContainer.style.display = 'block';
 
+      // 1. Chạy hiệu ứng đếm số ngày
       let currentDay = 0;
       const counterElement = document.getElementById('dayCounter');
       const messageElement = document.getElementById('finalMessage');
@@ -234,11 +245,13 @@
           messageElement.classList.add('show');
           startHeartRain();
 
+          // 2. Chuyển từng bức ảnh cách nhau khoảng 20 giây
           startLinearSlideshow();
         }
         counterElement.innerText = currentDay;
       }, 30);
 
+      // Cập nhật thanh tiến trình bài hát
       music.ontimeupdate = () => {
         const bar = document.getElementById('progressBar');
         if (music.duration) {
@@ -248,14 +261,16 @@
     }
 
     function startLinearSlideshow() {
+      // Chuyển ảnh mỗi 20 giây. Đến tấm cuối cùng (ảnh 7) sẽ dừng cố định.
       slideTimer = setInterval(() => {
         if (currentIndex < totalImages - 1) {
           currentIndex++;
           changeStage(currentIndex);
         } else {
+          // Dừng lại ở bức ảnh cuối cùng cùng lời nhắn kết thúc
           clearInterval(slideTimer);
         }
-      }, 22000); 
+      }, 20000); 
     }
 
     function changeStage(index) {
