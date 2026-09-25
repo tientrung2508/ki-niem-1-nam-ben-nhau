@@ -36,7 +36,6 @@
       padding: 30px 20px;
     }
 
-    /* Bức ảnh trình chiếu */
     .bg-image-wrapper {
       position: absolute;
       top: 0; left: 0; width: 100%; height: 100%;
@@ -65,7 +64,6 @@
       z-index: 2;
     }
 
-    /* Nội dung hiển thị */
     .content-box {
       position: relative;
       z-index: 10;
@@ -105,7 +103,6 @@
       opacity: 1;
     }
 
-    /* Controls */
     .controls-area {
       position: relative;
       z-index: 10;
@@ -150,7 +147,6 @@
       transition: width 0.3s linear;
     }
 
-    /* Trái tim rơi */
     .heart-particle {
       position: absolute;
       top: -30px;
@@ -171,13 +167,14 @@
 
   <div class="container">
     <div class="bg-image-wrapper">
+      <!-- Khớp chính xác tên file trên GitHub -->
       <img src="IMG_2288.png" class="bg-image active" id="img0" alt="Kỷ niệm">
-      <img src="IMG_2294.JPEG" class="bg-image" id="img1" alt="Kỷ niệm" onerror="this.src='IMG_2294.jpeg'">
-      <img src="IMG_2295.JPEG" class="bg-image" id="img2" alt="Kỷ niệm" onerror="this.src='IMG_2295.jpeg'">
-      <img src="IMG_2296.JPEG" class="bg-image" id="img3" alt="Kỷ niệm" onerror="this.src='IMG_2296.jpeg'">
-      <img src="IMG_2297.JPEG" class="bg-image" id="img4" alt="Kỷ niệm" onerror="this.src='IMG_2297.jpeg'">
-      <img src="IMG_2298.JPEG" class="bg-image" id="img5" alt="Kỷ niệm" onerror="this.src='IMG_2298.jpeg'">
-      <img src="IMG_2299.JPEG" class="bg-image" id="img6" alt="Kỷ niệm" onerror="this.src='IMG_2299.jpeg'">
+      <img src="IMG_2294.jpeg" class="bg-image" id="img1" alt="Kỷ niệm">
+      <img src="IMG_2295.jpeg" class="bg-image" id="img2" alt="Kỷ niệm">
+      <img src="IMG_2296.jpeg" class="bg-image" id="img3" alt="Kỷ niệm">
+      <img src="IMG_2297.jpeg" class="bg-image" id="img4" alt="Kỷ niệm">
+      <img src="IMG_2298.jpeg" class="bg-image" id="img5" alt="Kỷ niệm">
+      <img src="IMG_2299.jpeg" class="bg-image" id="img6" alt="Kỷ niệm">
     </div>
     <div class="overlay"></div>
 
@@ -197,7 +194,7 @@
     </div>
   </div>
 
-  <!-- Thẻ phát nhạc tối ưu hóa chuẩn file music.mp3 -->
+  <!-- Khớp file music.mp3 -->
   <audio id="bgMusic" src="music.mp3" preload="auto" playsinline></audio>
 
   <script>
@@ -220,17 +217,15 @@
       const music = document.getElementById('bgMusic');
       const progressContainer = document.getElementById('progressContainer');
 
-      // Đảm bảo trình duyệt kích hoạt âm thanh ngay khi người dùng chạm nút
       music.play().then(() => {
         console.log("Phát nhạc thành công!");
       }).catch(err => {
-        console.log("Lỗi tự động phát nhạc:", err);
+        console.log("Lỗi phát nhạc:", err);
       });
       
       btn.style.display = 'none';
       progressContainer.style.display = 'block';
 
-      // 1. Chạy hiệu ứng đếm số ngày
       let currentDay = 0;
       const counterElement = document.getElementById('dayCounter');
       const messageElement = document.getElementById('finalMessage');
@@ -245,13 +240,12 @@
           messageElement.classList.add('show');
           startHeartRain();
 
-          // 2. Chuyển từng bức ảnh cách nhau khoảng 20 giây
+          // Chuyển ảnh mỗi 22 giây để phủ hợp thời lượng bài hát ~4 phút 18 giây
           startLinearSlideshow();
         }
         counterElement.innerText = currentDay;
       }, 30);
 
-      // Cập nhật thanh tiến trình bài hát
       music.ontimeupdate = () => {
         const bar = document.getElementById('progressBar');
         if (music.duration) {
@@ -261,16 +255,15 @@
     }
 
     function startLinearSlideshow() {
-      // Chuyển ảnh mỗi 20 giây. Đến tấm cuối cùng (ảnh 7) sẽ dừng cố định.
       slideTimer = setInterval(() => {
         if (currentIndex < totalImages - 1) {
           currentIndex++;
           changeStage(currentIndex);
         } else {
-          // Dừng lại ở bức ảnh cuối cùng cùng lời nhắn kết thúc
+          // Đến ảnh cuối cùng sẽ dừng cố định kèm câu chốt
           clearInterval(slideTimer);
         }
-      }, 20000); 
+      }, 22000); 
     }
 
     function changeStage(index) {
