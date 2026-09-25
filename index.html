@@ -3,174 +3,268 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kỷ Niệm 1 Năm - Báu & Trang</title>
+  <title>Our Love Journey - Báu & Trang</title>
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      background: linear-gradient(135deg, #ffe6e9 0%, #ffb6c1 100%);
+      background: #111;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       min-height: 100vh;
       display: flex;
-      flex-direction: column;
-      align-items: center;
       justify-content: center;
-      overflow-x: hidden;
-      color: #4a4a4a;
+      align-items: center;
+      overflow: hidden;
     }
 
-    .container {
-      width: 90%;
-      max-width: 450px;
-      background: rgba(255, 255, 255, 0.9);
-      padding: 25px;
+    /* Khung máy chơi game / Màn hình game */
+    .game-card {
+      width: 95%;
+      max-width: 420px;
+      height: 600px;
+      background: linear-gradient(to bottom, #87CEEB 0%, #E0F6FF 60%, #e0c3fc 100%);
       border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-      text-align: center;
-      position: relative;
-    }
-
-    h1 {
-      color: #e63946;
-      font-size: 1.6rem;
-      margin-bottom: 8px;
-    }
-
-    p.subtitle {
-      font-size: 0.95rem;
-      color: #777;
-      margin-bottom: 20px;
-    }
-
-    /* Khung hoạt họa */
-    .scene {
-      width: 100%;
-      height: 180px;
-      background: #fff0f3;
-      border-radius: 15px;
       position: relative;
       overflow: hidden;
-      margin-bottom: 20px;
-      border: 2px dashed #ffb6c1;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+      border: 4px solid #fff;
     }
 
-    .character {
-      font-size: 40px;
+    /* Tiêu đề & Mây */
+    .header-title {
+      text-align: center;
+      margin-top: 15px;
+      color: #d62828;
+      font-weight: bold;
+      text-shadow: 1px 1px 2px #fff;
+      font-size: 1.2rem;
+      z-index: 10;
+      position: relative;
+    }
+
+    /* Mây trôi */
+    .cloud {
       position: absolute;
-      bottom: 20px;
-      transition: all 0.5s ease;
+      font-size: 30px;
+      opacity: 0.8;
+      animation: moveCloud 20s linear infinite;
+    }
+    @keyframes moveCloud {
+      from { left: -50px; }
+      to { left: 450px; }
     }
 
-    #boy {
-      left: 10px;
+    /* Bối cảnh con đường */
+    .world {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 220px;
+    }
+    
+    .grass {
+      position: absolute;
+      bottom: 60px;
+      width: 100%;
+      height: 20px;
+      background: #73a942;
     }
 
-    #girl {
-      right: 20px;
+    .road {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 60px;
+      background: #52b788;
+      border-top: 4px dashed #fff;
     }
 
+    /* Cây cối bên đường */
+    .tree {
+      position: absolute;
+      bottom: 80px;
+      font-size: 45px;
+    }
+
+    /* Nhân vật & Vật phẩm */
+    .char {
+      position: absolute;
+      bottom: 65px;
+      font-size: 42px;
+      transition: all 0.8s ease-in-out;
+      z-index: 5;
+    }
+
+    #boy { left: 20px; }
+    #girl { right: 30px; }
     #flower {
       position: absolute;
-      font-size: 24px;
+      bottom: 80px;
+      font-size: 25px;
       display: none;
-      bottom: 45px;
-      left: 50px;
-      transition: all 0.5s ease;
+      z-index: 6;
+      transition: all 0.5s;
     }
 
-    /* Nút tương tác */
-    .btn {
-      background-color: #e63946;
+    /* Nút bấm chơi game */
+    .controls {
+      position: absolute;
+      bottom: 15px;
+      width: 100%;
+      text-align: center;
+      z-index: 20;
+    }
+
+    .btn-game {
+      background: #ff4d6d;
       color: white;
       border: none;
-      padding: 12px 24px;
+      padding: 12px 25px;
       font-size: 1rem;
-      border-radius: 25px;
+      font-weight: bold;
+      border-radius: 30px;
+      box-shadow: 0 5px 0 #c77dff, 0 8px 15px rgba(0,0,0,0.3);
       cursor: pointer;
-      box-shadow: 0 4px 15px rgba(230, 57, 70, 0.3);
-      transition: transform 0.2s;
+      transition: all 0.1s;
+    }
+    .btn-game:active {
+      transform: translateY(4px);
+      box-shadow: 0 1px 0 #c77dff;
     }
 
-    .btn:active {
-      transform: scale(0.95);
+    /* Lời nhắn / Thư tình */
+    .letter-modal {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      width: 85%;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      border: 2px solid #ff4d6d;
+      text-align: center;
+      transition: transform 0.5s ease;
+      z-index: 30;
     }
-
-    /* Khung lời nhắn */
-    .message-box {
-      margin-top: 20px;
-      display: none;
-      animation: fadeIn 1s forwards;
-      text-align: left;
-      background: #fff;
-      padding: 15px;
-      border-radius: 12px;
-      border-left: 4px solid #e63946;
-      font-size: 0.95rem;
-      line-height: 1.6;
+    .letter-modal.open {
+      transform: translate(-50%, -50%) scale(1);
     }
+    .letter-modal h2 { color: #ff4d6d; font-size: 1.3rem; margin-bottom: 10px; }
+    .letter-modal p { font-size: 0.95rem; color: #444; line-height: 1.5; text-align: left; }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
+    /* Mưa trái tim */
+    .heart {
+      position: absolute;
+      color: #ff4d6d;
+      font-size: 20px;
+      animation: drop 2.5s linear infinite;
+      z-index: 15;
+    }
+    @keyframes drop {
+      0% { transform: translateY(-20px); opacity: 1; }
+      100% { transform: translateY(600px); opacity: 0; }
     }
   </style>
 </head>
 <body>
 
-  <div class="container">
-    <h1>Happy 1st Anniversary! ❤️</h1>
-    <p class="subtitle">29/09 - Hành trình của chúng mình</p>
+  <div class="game-card">
+    <div class="header-title">LEVEL 1: 365 DAYS TOGETHER ❤️</div>
+    
+    <div class="cloud" style="top: 40px;">☁️</div>
+    <div class="cloud" style="top: 80px; animation-delay: -10s;">☁️</div>
 
-    <div class="scene">
-      <div id="boy" class="character">👦</div>
-      <div id="flower">🌹</div>
-      <div id="girl" class="character">👧</div>
+    <div class="world">
+      <div class="tree" style="left: 10px;">🌳</div>
+      <div class="tree" style="right: 10px;">🌸</div>
+      <div class="grass"></div>
+      <div class="road"></div>
     </div>
 
-    <button id="actionBtn" class="btn" onclick="startStory()">Chạm vào đây nè ❤️</button>
+    <div id="boy" class="char">🏃‍♂️</div>
+    <div id="flower">💐</div>
+    <div id="girl" class="char">🚶‍♀️</div>
 
-    <div id="messageBox" class="message-box">
-      <strong>Gửi Trang yêu quý,</strong><br>
-      Thế là tròn 1 năm chúng mình nắm tay nhau đi qua biết bao nhiêu kỷ niệm. Cảm ơn em vì đã luôn ở bên cạnh, lắng nghe và mang lại nhiều niềm vui cho anh.<br><br>
-      Chặng đường phía trước còn dài, mong rằng chúng mình vẫn sẽ nắm chặt tay nhau như ngày đầu tiên em nhé! Chúc mừng kỷ niệm 1 năm của chúng mình! ✨
+    <div class="controls">
+      <button id="gameBtn" class="btn-game" onclick="nextStep()">Bấm để bắt đầu ▶️</button>
+    </div>
+
+    <div id="letter" class="letter-modal">
+      <h2>Gửi Trang Yêu Vấu! 💌</h2>
+      <p>
+        Chúc mừng kỷ niệm 1 năm ngày hai đứa mình bên nhau! <br><br>
+        Cảm ơn em đã cùng anh đi qua 365 ngày tràn ngập niềm vui và hạnh phúc. Mong rằng chuyến xe tình yêu này sẽ luôn kéo dài và chúng mình sẽ tiếp tục nắm tay nhau đi qua thêm nhiều năm nữa nhé! ❤️
+      </p>
     </div>
   </div>
 
-  <!-- Nhạc nền (Thay URL nhạc tại đây) -->
   <audio id="bgMusic" loop src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
 
   <script>
-    let step = 0;
+    let currentStep = 0;
 
-    function startStory() {
+    function nextStep() {
       const boy = document.getElementById('boy');
+      const girl = document.getElementById('girl');
       const flower = document.getElementById('flower');
-      const btn = document.getElementById('actionBtn');
-      const msg = document.getElementById('messageBox');
+      const btn = document.getElementById('gameBtn');
+      const letter = document.getElementById('letter');
       const music = document.getElementById('bgMusic');
 
       // Bật nhạc
-      music.play().catch(() => console.log("Cần tương tác để phát nhạc"));
+      music.play().catch(() => {});
 
-      if (step === 0) {
-        // Nam tiến lại gần nữ
-        boy.style.left = 'calc(100% - 110px)';
+      if (currentStep === 0) {
+        // Nam đi tới gần nữ
+        boy.style.left = 'calc(100% - 130px)';
+        boy.innerHTML = '🚶‍♂️';
+        btn.innerText = 'Tặng hoa cho Trang 💐';
+        currentStep = 1;
+      } 
+      else if (currentStep === 1) {
+        // Tặng hoa
         flower.style.display = 'block';
-        flower.style.left = 'calc(100% - 90px)';
-        btn.innerText = 'Trao hoa cho Trang 🌹';
-        step = 1;
-      } else if (step === 1) {
-        // Trao hoa
-        flower.style.left = 'calc(100% - 60px)';
-        btn.innerText = 'Đọc thư anh viết ✉️';
-        step = 2;
-      } else if (step === 2) {
-        // Hiện thư nhắn
-        msg.style.display = 'block';
+        flower.style.left = 'calc(100% - 95px)';
+        btn.innerText = 'Nắm tay nhau đi tiếp 👫';
+        currentStep = 2;
+      } 
+      else if (currentStep === 2) {
+        // Nam và nữ nắm tay nhau đi về phía trước
+        flower.style.display = 'none';
+        boy.style.left = 'calc(100% - 90px)';
+        girl.style.right = '20px';
+        
+        // Đổi nhân vật thành cặp đôi nắm tay
+        setTimeout(() => {
+          boy.style.display = 'none';
+          girl.innerHTML = '👩‍❤️‍👨';
+          girl.style.right = '40px';
+        }, 500);
+
+        // Tạo hiệu ứng tim rơi
+        createHearts();
+
+        btn.innerText = 'Mở thư tình ✉️';
+        currentStep = 3;
+      } 
+      else if (currentStep === 3) {
+        // Mở thư
+        letter.classList.add('open');
         btn.style.display = 'none';
+      }
+    }
+
+    function createHearts() {
+      for (let i = 0; i < 15; i++) {
+        setTimeout(() => {
+          const heart = document.createElement('div');
+          heart.classList.add('heart');
+          heart.innerHTML = '❤️';
+          heart.style.left = Math.random() * 100 + '%';
+          heart.style.animationDuration = (Math.random() * 2 + 1.5) + 's';
+          document.querySelector('.game-card').appendChild(heart);
+        }, i * 200);
       }
     }
   </script>
