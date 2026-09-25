@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kỷ Niệm 1 Năm Bên Nhau</title>
+  <title>Kỷ Niệm 1 Năm Bên Nhau ❤️</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Montserrat:wght@300;400;600&display=swap');
 
@@ -19,7 +19,6 @@
       color: #fff;
     }
 
-    /* Khung hiển thị giao diện */
     .container {
       position: relative;
       width: 100%;
@@ -34,87 +33,95 @@
       flex-direction: column;
       align-items: center;
       justify-content: space-between;
-      padding: 40px 20px;
+      padding: 30px 20px;
     }
 
-    /* 3. Bức ảnh anime phóng to / thu nhỏ mượt mà */
+    /* Bức ảnh trình chiếu */
     .bg-image-wrapper {
       position: absolute;
       top: 0; left: 0; width: 100%; height: 100%;
       z-index: 1;
-      overflow: hidden;
     }
 
     .bg-image {
-      width: 100%;
-      height: 100%;
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
       object-fit: cover;
-      opacity: 0.85;
-      /* Hiệu ứng Zoom in/out liên tục nhẹ nhàng */
-      animation: pulseZoom 8s ease-in-out infinite alternate;
-      transform-origin: center center;
+      opacity: 0;
+      transition: opacity 1.5s ease-in-out, transform 8s ease-in-out;
+      transform: scale(1);
     }
 
-    @keyframes pulseZoom {
-      0% { transform: scale(1); }
-      100% { transform: scale(1.12); }
+    .bg-image.active {
+      opacity: 0.88;
+      transform: scale(1.1);
     }
 
-    /* Lớp phủ làm dịu ánh sáng để thấy rõ chữ */
     .overlay {
       position: absolute;
       top: 0; left: 0; width: 100%; height: 100%;
-      background: linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.7) 100%);
+      background: linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.75) 100%);
       z-index: 2;
     }
 
-    /* Khu vực hiển thị đếm số ngày và lời nhắn */
+    /* Nội dung đếm ngày và thông điệp */
     .content-box {
       position: relative;
       z-index: 10;
       text-align: center;
-      margin-top: 20px;
+      margin-top: 25px;
+      width: 100%;
+    }
+
+    .counter-box {
+      transition: all 0.8s ease;
     }
 
     .counter-number {
       font-size: 3.8rem;
       font-weight: 700;
       color: #fff;
-      text-shadow: 0 4px 15px rgba(0, 0, 0, 0.8), 0 0 20px rgba(255, 182, 193, 0.6);
-      font-family: 'Montserrat', sans-serif;
+      text-shadow: 0 4px 15px rgba(0,0,0,0.8), 0 0 20px rgba(255,182,193,0.6);
     }
 
     .counter-label {
-      font-size: 1.1rem;
+      font-size: 1rem;
       letter-spacing: 3px;
       text-transform: uppercase;
-      margin-bottom: 15px;
       color: #ffe0e6;
-      opacity: 0.9;
+      margin-bottom: 10px;
     }
 
     .message-text {
       font-family: 'Dancing Script', cursive;
-      font-size: 2rem;
+      font-size: 1.8rem;
       color: #ffccd5;
       text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
+      min-height: 80px;
+      padding: 0 10px;
+      line-height: 1.4;
       opacity: 0;
-      transform: translateY(20px);
-      transition: all 1.5s ease;
+      transition: opacity 1s ease;
     }
 
     .message-text.show {
       opacity: 1;
-      transform: translateY(0);
     }
 
-    /* Nút bắt đầu */
-    .start-btn {
+    /* Thanh điều khiển nhạc & Tiến trình */
+    .controls-area {
       position: relative;
       z-index: 10;
-      background: rgba(255, 255, 255, 0.2);
+      width: 100%;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .start-btn {
+      background: rgba(255, 255, 255, 0.25);
       backdrop-filter: blur(8px);
-      border: 1px solid rgba(255, 255, 255, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.7);
       color: #fff;
       padding: 14px 32px;
       font-size: 1rem;
@@ -126,93 +133,163 @@
     }
 
     .start-btn:hover {
-      background: rgba(255, 255, 255, 0.4);
+      background: rgba(255, 255, 255, 0.45);
       transform: scale(1.05);
     }
 
-    /* 2. Hiệu ứng Trái tim rơi xuống */
+    .progress-bar-container {
+      width: 100%;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 2px;
+      margin-top: 15px;
+      overflow: hidden;
+      display: none;
+    }
+
+    .progress-bar {
+      width: 0%;
+      height: 100%;
+      background: #ff4d6d;
+      transition: width 0.3s linear;
+    }
+
+    /* Hiệu ứng Trái tim rơi */
     .heart-particle {
       position: absolute;
       top: -30px;
       color: #ff4d6d;
       font-size: 20px;
       z-index: 5;
-      user-select: none;
       pointer-events: none;
       animation: fall linear forwards;
     }
 
     @keyframes fall {
-      0% {
-        transform: translateY(0) rotate(0deg);
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(750px) rotate(360deg);
-        opacity: 0;
-      }
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(750px) rotate(360deg); opacity: 0; }
     }
   </style>
 </head>
 <body>
 
   <div class="container">
-    <!-- Hình nền anime với tên file IMG_2288.png -->
+    <!-- Danh sách 7 bức ảnh theo đúng tên file trên GitHub -->
     <div class="bg-image-wrapper">
-      <img src="IMG_2288.png" class="bg-image" alt="Anime Hoàng Hôn" id="animeBg" onerror="this.src='https://raw.githubusercontent.com/tientrung2508/ki-niem-1-nam-ben-nhau/main/IMG_2288.png'">
+      <img src="IMG_2288.png" class="bg-image active" id="img0" alt="Kỷ niệm">
+      <img src="IMG_2294.jpeg" class="bg-image" id="img1" alt="Kỷ niệm" onerror="this.src='IMG_2294.JPEG'">
+      <img src="IMG_2295.jpeg" class="bg-image" id="img2" alt="Kỷ niệm" onerror="this.src='IMG_2295.JPEG'">
+      <img src="IMG_2296.jpeg" class="bg-image" id="img3" alt="Kỷ niệm" onerror="this.src='IMG_2296.JPEG'">
+      <img src="IMG_2297.jpeg" class="bg-image" id="img4" alt="Kỷ niệm" onerror="this.src='IMG_2297.JPEG'">
+      <img src="IMG_2298.jpeg" class="bg-image" id="img5" alt="Kỷ niệm" onerror="this.src='IMG_2298.JPEG'">
+      <img src="IMG_2299.jpeg" class="bg-image" id="img6" alt="Kỷ niệm" onerror="this.src='IMG_2299.JPEG'">
     </div>
     <div class="overlay"></div>
 
-    <!-- Nội dung chạy chữ đếm ngày -->
     <div class="content-box">
-      <div class="counter-number" id="dayCounter">0</div>
-      <div class="counter-label" id="counterLabel">NGÀY</div>
-      <div class="message-text" id="finalMessage">Thế là tròn 1 năm 2 đứa bên nhau.. ❤️</div>
+      <div class="counter-box" id="counterBox">
+        <div class="counter-number" id="dayCounter">0</div>
+        <div class="counter-label">NGÀY BÊN NHAU</div>
+      </div>
+      <div class="message-text" id="finalMessage"></div>
     </div>
 
-    <!-- Nút bắt đầu -->
-    <button class="start-btn" id="startBtn" onclick="startStory()">Xem kỷ niệm ✨</button>
+    <div class="controls-area">
+      <button class="start-btn" id="startBtn" onclick="startStory()">Chạm để bắt đầu ✨</button>
+      <div class="progress-bar-container" id="progressContainer">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+    </div>
   </div>
 
-  <!-- Nhạc đúng tên file MP3 trên GitHub -->
-  <audio id="bgMusic" loop src="Ed Sheeran - Photograph (Lyrics) - 7clouds.mp3"></audio>
+  <audio id="bgMusic" src="Ed Sheeran - Photograph (Lyrics) - 7clouds.mp3"></audio>
 
   <script>
+    const messages = [
+      "Thế là tròn 1 năm 2 đứa bên nhau.. ❤️",
+      "Những bữa ăn ngon, những nụ cười giòn 🍲✨",
+      "Bên em, ngày bình thường cũng thật ấm áp 🐱💕",
+      "Cùng em nhí nhố qua từng khoảnh khắc 😊🌸",
+      "Mỗi con đường mình cùng bước qua 🌹🌿",
+      "Mỗi nụ cười trao nhau là một niềm hạnh phúc ✨",
+      "Cảm ơn em đã cùng anh đi qua 365 ngày tuyệt vời! Yêu em thật nhiều ❤️"
+    ];
+
+    let currentStage = 0;
     let heartInterval;
 
     function startStory() {
       const btn = document.getElementById('startBtn');
       const music = document.getElementById('bgMusic');
-      
-      // Cho nhạc chạy
+      const progressContainer = document.getElementById('progressContainer');
+
       music.play().catch(() => {});
       btn.style.display = 'none';
+      progressContainer.style.display = 'block';
 
-      // 1. Chạy chữ đếm từ 1 đến 365 ngày
+      // 1. Chạy đếm từ 1 đến 365 ngày
       let currentDay = 0;
-      const targetDay = 365;
       const counterElement = document.getElementById('dayCounter');
       const messageElement = document.getElementById('finalMessage');
 
       const counterInterval = setInterval(() => {
         currentDay += 5;
-        if (currentDay >= targetDay) {
-          currentDay = targetDay;
+        if (currentDay >= 365) {
+          currentDay = 365;
           clearInterval(counterInterval);
 
-          // Khi đạt 365 ngày -> Hiện dòng chữ
-          setTimeout(() => {
-            messageElement.classList.add('show');
-          }, 300);
-
-          // 2. Kích hoạt hiệu ứng tim rơi
+          messageElement.innerText = messages[0];
+          messageElement.classList.add('show');
           startHeartRain();
+
+          // Thiết lập tự động chuyển ảnh theo thời gian bài nhạc (~258s)
+          setupTimeline();
         }
         counterElement.innerText = currentDay;
       }, 30);
+
+      // Cập nhật thanh tiến trình nhạc
+      music.ontimeupdate = () => {
+        const bar = document.getElementById('progressBar');
+        if (music.duration) {
+          bar.style.width = (music.currentTime / music.duration * 100) + '%';
+        }
+      };
     }
 
-    // 2. Hàm tạo hiệu ứng tim rơi
+    function changeStage(index) {
+      if (index === currentStage) return;
+
+      // Đổi ảnh active
+      const images = document.querySelectorAll('.bg-image');
+      images.forEach((img, i) => {
+        img.classList.toggle('active', i === index);
+      });
+
+      // Đổi câu thoại
+      const messageElement = document.getElementById('finalMessage');
+      messageElement.classList.remove('show');
+      setTimeout(() => {
+        messageElement.innerText = messages[index] || messages[0];
+        messageElement.classList.add('show');
+      }, 500);
+
+      currentStage = index;
+    }
+
+    function setupTimeline() {
+      const music = document.getElementById('bgMusic');
+      // Tự động chuyển 7 giai đoạn ảnh khớp với thời lượng bài nhạc
+      setInterval(() => {
+        if (!music.paused && music.duration) {
+          const stageIndex = Math.floor((music.currentTime / music.duration) * 7);
+          if (stageIndex < 7 && stageIndex !== currentStage) {
+            changeStage(stageIndex);
+          }
+        }
+      }, 1000);
+    }
+
     function startHeartRain() {
       const container = document.querySelector('.container');
       const heartIcons = ['❤️', '💖', '💕', '🌸', '✨'];
@@ -221,17 +298,13 @@
         const heart = document.createElement('div');
         heart.classList.add('heart-particle');
         heart.innerText = heartIcons[Math.floor(Math.random() * heartIcons.length)];
-        
         heart.style.left = Math.random() * 90 + '%';
         heart.style.animationDuration = (Math.random() * 3 + 2.5) + 's';
-        heart.style.fontSize = (Math.random() * 12 + 16) + 'px';
+        heart.style.fontSize = (Math.random() * 10 + 16) + 'px';
 
         container.appendChild(heart);
-
-        setTimeout(() => {
-          heart.remove();
-        }, 5500);
-      }, 300);
+        setTimeout(() => heart.remove(), 5500);
+      }, 350);
     }
   </script>
 </body>
