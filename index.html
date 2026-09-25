@@ -7,8 +7,8 @@
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      background: #111;
-      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #0d0d11;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       min-height: 100vh;
       display: flex;
       justify-content: center;
@@ -16,87 +16,70 @@
       overflow: hidden;
     }
 
-    /* Khung tranh nghệ thuật */
-    .art-card {
+    /* Khung máy / Khung tranh */
+    .anime-card {
       width: 100%;
       max-width: 420px;
-      height: 650px;
-      /* Phối màu hoàng hôn bãi biển kiểu Ghibli */
-      background: linear-gradient(to bottom, #ff7e5f 0%, #feb47b 35%, #ffeccc 60%, #4a90e2 100%);
+      height: 680px;
+      /* Dùng ảnh anime hoàng hôn biển làm nền */
+      background: url('http://googleusercontent.com/generated_image_content/0') no-repeat center center/cover;
       border-radius: 20px;
       position: relative;
       overflow: hidden;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.5);
-      border: 2px solid #ffffff40;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+      border: 2px solid rgba(255, 255, 255, 0.3);
     }
 
-    /* Mặt trời hoàng hôn */
-    .sun {
+    /* Lớp phủ độ bóng để chữ và nút dễ nhìn hơn */
+    .overlay {
       position: absolute;
-      top: 180px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 120px;
-      height: 120px;
-      background: radial-gradient(circle, #fff 0%, #ffeb3b 60%, transparent 100%);
-      border-radius: 50%;
-      box-shadow: 0 0 40px #ffeb3b;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0) 50%, rgba(0,0,0,0.5) 100%);
     }
 
-    /* Sóng biển & Bờ cát */
-    .ocean {
+    /* Tiêu đề */
+    .title {
       position: absolute;
-      bottom: 0;
+      top: 25px;
       width: 100%;
-      height: 250px;
-      background: linear-gradient(to bottom, #2b5876 0%, #4e4376 100%);
-    }
-    .sand {
-      position: absolute;
-      bottom: 0;
-      width: 100%;
-      height: 120px;
-      background: linear-gradient(to bottom, #e2b078 0%, #a87948 100%);
-      border-top-left-radius: 50% 20px;
-      border-top-right-radius: 50% 20px;
+      text-align: center;
+      color: #fff;
+      font-size: 1.3rem;
+      font-weight: bold;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.7);
+      letter-spacing: 1px;
     }
 
-    /* Đồ họa Đôi tình nhân SVG (Bóng silhouettes lãng mạn) */
-    .couple-container {
-      position: absolute;
-      bottom: 70px;
-      left: -120px;
-      width: 120px;
-      transition: all 4s cubic-bezier(0.25, 1, 0.5, 1);
-      z-index: 5;
-    }
-
-    /* Nút bấm tương tác */
+    /* Nút tương tác lãng mạn */
     .controls {
       position: absolute;
-      bottom: 25px;
+      bottom: 30px;
       width: 100%;
       text-align: center;
       z-index: 20;
     }
 
-    .btn-romantic {
+    .btn-anime {
       background: rgba(255, 255, 255, 0.25);
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       color: #fff;
-      border: 1px solid rgba(255,255,255,0.6);
+      border: 1px solid rgba(255, 255, 255, 0.7);
       padding: 14px 28px;
       font-size: 1rem;
+      font-weight: 600;
       border-radius: 30px;
       cursor: pointer;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
       transition: all 0.3s;
     }
-    .btn-romantic:hover {
+
+    .btn-anime:hover {
       background: rgba(255, 255, 255, 0.4);
+      transform: scale(1.03);
     }
 
-    /* Bức thư tình nghệ thuật */
+    /* Bức thư tình */
     .letter-modal {
       position: absolute;
       top: 50%;
@@ -104,65 +87,57 @@
       transform: translate(-50%, -50%) scale(0);
       width: 85%;
       background: rgba(255, 255, 255, 0.92);
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
       padding: 25px;
-      border-radius: 18px;
-      box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+      border-radius: 20px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.4);
       text-align: center;
       transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       z-index: 30;
+      border: 1px solid rgba(255, 255, 255, 0.5);
     }
+
     .letter-modal.open {
       transform: translate(-50%, -50%) scale(1);
     }
-    .letter-modal h2 { color: #d94b4b; font-size: 1.4rem; margin-bottom: 12px; }
-    .letter-modal p { font-size: 0.95rem; color: #444; line-height: 1.6; text-align: left; }
 
-    /* Chim hải âu bay */
-    .bird {
+    .letter-modal h2 { color: #e63946; font-size: 1.3rem; margin-bottom: 12px; }
+    .letter-modal p { font-size: 0.95rem; color: #333; line-height: 1.6; text-align: left; }
+
+    /* Hiệu ứng Mưa Trái Tim & Đom đóm sáng */
+    .heart {
       position: absolute;
-      color: rgba(255,255,255,0.7);
-      font-size: 18px;
-      animation: fly 12s linear infinite;
+      color: #ff4d6d;
+      font-size: 22px;
+      animation: dropHeart 3s linear infinite;
+      z-index: 10;
+      pointer-events: none;
+      text-shadow: 0 0 10px rgba(255, 77, 109, 0.8);
     }
-    @keyframes fly {
-      from { left: -30px; transform: translateY(0); }
-      to { left: 450px; transform: translateY(-30px); }
+
+    @keyframes dropHeart {
+      0% { transform: translateY(-20px) scale(0.8); opacity: 1; }
+      50% { opacity: 0.9; }
+      100% { transform: translateY(700px) scale(1.2); opacity: 0; }
     }
   </style>
 </head>
 <body>
 
-  <div class="art-card">
-    <div class="sun"></div>
-    
-    <div class="bird" style="top: 80px; animation-delay: 0s;">🕊️</div>
-    <div class="bird" style="top: 120px; animation-delay: -4s;">🕊️</div>
-
-    <div class="ocean"></div>
-    <div class="sand"></div>
-
-    <div id="couple" class="couple-container">
-      <svg viewBox="0 0 100 120" width="100" height="120">
-        <path d="M 30,40 Q 30,20 40,20 Q 50,20 50,40 L 48,70 L 38,110 L 32,110 L 42,70 L 30,70 Z" fill="#2c1e21"/>
-        <path d="M 60,45 Q 60,28 68,28 Q 76,28 76,45 L 72,75 L 78,110 L 72,110 L 66,78 L 58,78 Z" fill="#2c1e21"/>
-        <path d="M 60,55 L 78,80 L 54,80 Z" fill="#2c1e21"/>
-        <path d="M 45,50 Q 52,60 58,52" stroke="#2c1e21" stroke-width="4" fill="none"/>
-        <circle cx="26" cy="48" r="6" fill="#ff6b6b"/>
-        <circle cx="22" cy="52" r="5" fill="#ffa8a8"/>
-        <circle cx="28" cy="54" r="5" fill="#ff8787"/>
-      </svg>
-    </div>
+  <div class="anime-card" id="card">
+    <div class="overlay"></div>
+    <div class="title">Our 1st Anniversary ❤️</div>
 
     <div class="controls">
-      <button id="actionBtn" class="btn-romantic" onclick="walkTogether()">Chạm vào đây nè ❤️</button>
+      <button id="actionBtn" class="btn-anime" onclick="triggerEffect()">Chạm để tạo bất ngờ ✨</button>
     </div>
 
     <div id="letter" class="letter-modal">
       <h2>Gửi Trang Yêu Vấu! 💌</h2>
       <p>
         Chúc mừng kỷ niệm 1 năm ngày hai đứa mình bên nhau! <br><br>
-        Cảm ơn em vì đã đến, cùng anh trải qua 365 ngày thật đẹp. Giống như buổi hoàng hôn ấm áp này, mong rằng chúng mình sẽ tiếp tục nắm tay nhau đi qua thật nhiều chặng đường phía trước nhé! ❤️
+        Cảm ơn em đã cùng anh đi qua 365 ngày thật nhiều khoảnh khắc đáng nhớ. Mong rằng hành trình yêu thương của chúng mình sẽ mãi rực rỡ và ấm áp như buổi hoàng hôn này. Yêu em nhiều! ❤️
       </p>
     </div>
   </div>
@@ -172,25 +147,38 @@
   <script>
     let step = 0;
 
-    function walkTogether() {
-      const couple = document.getElementById('couple');
+    function triggerEffect() {
       const btn = document.getElementById('actionBtn');
       const letter = document.getElementById('letter');
       const music = document.getElementById('bgMusic');
 
-      // Tự động bật nhạc nền
+      // Tự động bật nhạc
       music.play().catch(() => {});
 
       if (step === 0) {
-        // Cặp đôi dạo bước ra giữa bãi biển
-        couple.style.left = 'calc(50% - 50px)';
-        btn.innerText = 'Đọc lời chúc của anh ✉️';
+        // Kích hoạt hiệu ứng mưa trái tim rơi
+        startHeartRain();
+        btn.innerText = 'Mở thư tình của anh ✉️';
         step = 1;
       } 
       else if (step === 1) {
-        // Hiện thư tình lãng mạn
+        // Hiện thư tình
         letter.classList.add('open');
         btn.style.display = 'none';
+      }
+    }
+
+    function startHeartRain() {
+      const card = document.getElementById('card');
+      for (let i = 0; i < 20; i++) {
+        setTimeout(() => {
+          const heart = document.createElement('div');
+          heart.classList.add('heart');
+          heart.innerHTML = '💖';
+          heart.style.left = Math.random() * 90 + '%';
+          heart.style.animationDuration = (Math.random() * 2 + 2) + 's';
+          card.appendChild(heart);
+        }, i * 150);
       }
     }
   </script>
