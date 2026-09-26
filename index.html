@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
@@ -48,13 +48,13 @@
       width: 100%; height: 100%;
       object-fit: cover;
       opacity: 0;
-      transition: opacity 2s ease-in-out, transform 12s ease-in-out;
+      transition: opacity 1s ease-in-out, transform 4s ease-in-out;
       transform: scale(1);
     }
 
     .bg-image.active {
       opacity: 0.88;
-      transform: scale(1.12);
+      transform: scale(1.08);
     }
 
     .overlay {
@@ -96,7 +96,7 @@
       padding: 0 10px;
       line-height: 1.4;
       opacity: 0;
-      transition: opacity 1.2s ease;
+      transition: opacity 0.8s ease;
     }
 
     .message-text.show {
@@ -167,7 +167,6 @@
 
   <div class="container">
     <div class="bg-image-wrapper">
-      <!-- Khớp chính xác tên file trên GitHub -->
       <img src="IMG_2288.png" class="bg-image active" id="img0" alt="Kỷ niệm">
       <img src="IMG_2294.jpeg" class="bg-image" id="img1" alt="Kỷ niệm">
       <img src="IMG_2295.jpeg" class="bg-image" id="img2" alt="Kỷ niệm">
@@ -194,7 +193,6 @@
     </div>
   </div>
 
-  <!-- Khớp file music.mp3 -->
   <audio id="bgMusic" src="music.mp3" preload="auto" playsinline></audio>
 
   <script>
@@ -217,6 +215,7 @@
       const music = document.getElementById('bgMusic');
       const progressContainer = document.getElementById('progressContainer');
 
+      music.volume = 1.0;
       music.play().then(() => {
         console.log("Phát nhạc thành công!");
       }).catch(err => {
@@ -240,7 +239,7 @@
           messageElement.classList.add('show');
           startHeartRain();
 
-          // Chuyển ảnh mỗi 22 giây để phủ hợp thời lượng bài hát ~4 phút 18 giây
+          // Chuyển ảnh mỗi 3 giây
           startLinearSlideshow();
         }
         counterElement.innerText = currentDay;
@@ -260,10 +259,9 @@
           currentIndex++;
           changeStage(currentIndex);
         } else {
-          // Đến ảnh cuối cùng sẽ dừng cố định kèm câu chốt
           clearInterval(slideTimer);
         }
-      }, 22000); 
+      }, 3000); 
     }
 
     function changeStage(index) {
@@ -278,7 +276,26 @@
       setTimeout(() => {
         messageElement.innerText = messages[index] || messages[0];
         messageElement.classList.add('show');
-      }, 500);
+
+        // Khi chuyển sang tấm hình thứ 7 -> Nhạc mờ dần (Fade-out) trong 2 giây rồi tắt
+        if (index === totalImages - 1) {
+          fadeOutMusic();
+        }
+      }, 300);
+    }
+
+    // Hàm làm mờ âm thanh mượt mà
+    function fadeOutMusic() {
+      const music = document.getElementById('bgMusic');
+      const fadeInterval = setInterval(() => {
+        if (music.volume > 0.05) {
+          music.volume -= 0.05;
+        } else {
+          music.volume = 0;
+          music.pause();
+          clearInterval(fadeInterval);
+        }
+      }, 100);
     }
 
     function startHeartRain() {
