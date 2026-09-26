@@ -48,13 +48,13 @@
       width: 100%; height: 100%;
       object-fit: cover;
       opacity: 0;
-      transition: opacity 2s ease-in-out, transform 11s ease-in-out;
+      transition: opacity 2.5s ease-in-out, transform 16s ease-in-out;
       transform: scale(1);
     }
 
     .bg-image.active {
       opacity: 0.88;
-      transform: scale(1.12);
+      transform: scale(1.15);
     }
 
     .overlay {
@@ -95,15 +95,6 @@
       min-height: 95px;
       padding: 0 10px;
       line-height: 1.4;
-      opacity: 0;
-      transform: translateY(10px);
-      /* Hiệu ứng chữ mờ hiện từ từ trong 2.5 giây */
-      transition: opacity 2.5s ease-in-out, transform 2.5s ease-out;
-    }
-
-    .message-text.show {
-      opacity: 1;
-      transform: translateY(0);
     }
 
     .controls-area {
@@ -212,6 +203,7 @@
     let currentIndex = 0;
     const totalImages = 7;
     let slideTimer = null;
+    let typeTimer = null;
 
     function startStory() {
       const btn = document.getElementById('startBtn');
@@ -230,7 +222,6 @@
 
       let currentDay = 0;
       const counterElement = document.getElementById('dayCounter');
-      const messageElement = document.getElementById('finalMessage');
 
       const counterInterval = setInterval(() => {
         currentDay += 5;
@@ -238,11 +229,8 @@
           currentDay = 365;
           clearInterval(counterInterval);
 
-          messageElement.innerText = messages[0];
-          messageElement.classList.add('show');
+          typeWriterEffect(messages[0]);
           startHeartRain();
-
-          // Bắt đầu slideshow với mỗi tấm dừng 10 giây
           startLinearSlideshow();
         }
         counterElement.innerText = currentDay;
@@ -256,8 +244,26 @@
       };
     }
 
+    // Hiệu ứng gõ từng ký tự một
+    function typeWriterEffect(text) {
+      const messageElement = document.getElementById('finalMessage');
+      messageElement.innerText = ''; 
+      let charIndex = 0;
+      
+      if (typeTimer) clearInterval(typeTimer);
+
+      typeTimer = setInterval(() => {
+        if (charIndex < text.length) {
+          messageElement.innerText += text.charAt(charIndex);
+          charIndex++;
+        } else {
+          clearInterval(typeTimer);
+        }
+      }, 75); // Tốc độ gõ chữ dịu nhẹ (75ms/chữ)
+    }
+
     function startLinearSlideshow() {
-      // 10000ms = 10 giây mỗi tấm hình
+      // 15000ms = 15 giây mỗi tấm hình
       slideTimer = setInterval(() => {
         if (currentIndex < totalImages - 1) {
           currentIndex++;
@@ -265,7 +271,7 @@
         } else {
           clearInterval(slideTimer);
         }
-      }, 10000); 
+      }, 15000); 
     }
 
     function changeStage(index) {
@@ -274,18 +280,12 @@
         img.classList.toggle('active', i === index);
       });
 
-      const messageElement = document.getElementById('finalMessage');
-      messageElement.classList.remove('show');
-      
-      setTimeout(() => {
-        messageElement.innerText = messages[index] || messages[0];
-        messageElement.classList.add('show');
+      // Tự động gõ chữ cho từng slide
+      typeWriterEffect(messages[index] || messages[0]);
 
-        // Khi sang tấm hình thứ 7 -> Nhạc mờ dần (Fade-out) rồi tắt hẳn
-        if (index === totalImages - 1) {
-          fadeOutMusic();
-        }
-      }, 500);
+      if (index === totalImages - 1) {
+        fadeOutMusic();
+      }
     }
 
     function fadeOutMusic() {
@@ -298,7 +298,7 @@
           music.pause();
           clearInterval(fadeInterval);
         }
-      }, 100);
+      }, 150);
     }
 
     function startHeartRain() {
