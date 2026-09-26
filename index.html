@@ -48,13 +48,13 @@
       width: 100%; height: 100%;
       object-fit: cover;
       opacity: 0;
-      transition: opacity 1.2s ease-in-out, transform 6s ease-in-out;
+      transition: opacity 2s ease-in-out, transform 11s ease-in-out;
       transform: scale(1);
     }
 
     .bg-image.active {
       opacity: 0.88;
-      transform: scale(1.08);
+      transform: scale(1.12);
     }
 
     .overlay {
@@ -96,11 +96,14 @@
       padding: 0 10px;
       line-height: 1.4;
       opacity: 0;
-      transition: opacity 0.8s ease;
+      transform: translateY(10px);
+      /* Hiệu ứng chữ mờ hiện từ từ trong 2.5 giây */
+      transition: opacity 2.5s ease-in-out, transform 2.5s ease-out;
     }
 
     .message-text.show {
       opacity: 1;
+      transform: translateY(0);
     }
 
     .controls-area {
@@ -239,7 +242,7 @@
           messageElement.classList.add('show');
           startHeartRain();
 
-          // Bắt đầu trình chiếu mỗi 5 giây
+          // Bắt đầu slideshow với mỗi tấm dừng 10 giây
           startLinearSlideshow();
         }
         counterElement.innerText = currentDay;
@@ -254,7 +257,7 @@
     }
 
     function startLinearSlideshow() {
-      // 5000ms = 5 giây mỗi tấm hình
+      // 10000ms = 10 giây mỗi tấm hình
       slideTimer = setInterval(() => {
         if (currentIndex < totalImages - 1) {
           currentIndex++;
@@ -262,7 +265,7 @@
         } else {
           clearInterval(slideTimer);
         }
-      }, 5000); 
+      }, 10000); 
     }
 
     function changeStage(index) {
@@ -282,7 +285,7 @@
         if (index === totalImages - 1) {
           fadeOutMusic();
         }
-      }, 300);
+      }, 500);
     }
 
     function fadeOutMusic() {
