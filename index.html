@@ -33,7 +33,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: space-between;
-      padding: 30px 20px;
+      padding: 25px 20px;
     }
 
     .bg-image-wrapper {
@@ -60,7 +60,7 @@
     .overlay {
       position: absolute;
       top: 0; left: 0; width: 100%; height: 100%;
-      background: linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.85) 100%);
+      background: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.9) 100%);
       z-index: 2;
     }
 
@@ -68,33 +68,40 @@
       position: relative;
       z-index: 10;
       text-align: center;
-      margin-top: 25px;
+      margin-top: 15px;
       width: 100%;
+      padding: 0 10px;
     }
 
     .counter-number {
-      font-size: 3.8rem;
+      font-size: 3.5rem;
       font-weight: 700;
       color: #fff;
       text-shadow: 0 4px 15px rgba(0,0,0,0.8), 0 0 20px rgba(255,182,193,0.6);
     }
 
     .counter-label {
-      font-size: 1rem;
+      font-size: 0.95rem;
       letter-spacing: 3px;
       text-transform: uppercase;
       color: #ffe0e6;
-      margin-bottom: 10px;
+      margin-bottom: 15px;
     }
 
+    /* ĐÃ SỬA: Tăng khoảng cách chữ, cho phép xuống dòng mượt mà không bị mất chữ */
     .message-text {
       font-family: 'Dancing Script', cursive;
-      font-size: 1.8rem;
+      font-size: 1.65rem;
       color: #ffccd5;
       text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
-      min-height: 95px;
-      padding: 0 10px;
-      line-height: 1.4;
+      min-height: 120px;
+      line-height: 1.5;
+      letter-spacing: 1px;       /* Tạo khoảng cách giữa các chữ cái */
+      word-spacing: 3px;         /* Tạo khoảng cách rõ ràng giữa các từ */
+      white-space: normal;       /* Cho phép xuống dòng tự nhiên */
+      word-wrap: break-word;     /* Tự ngắt dòng khi câu quá dài */
+      display: block;
+      margin: 0 auto;
     }
 
     .controls-area {
@@ -244,7 +251,7 @@
       };
     }
 
-    // Hiệu ứng gõ từng ký tự một
+    // ĐÃ SỬA: Chỉnh tốc độ gõ chữ chậm lại (110ms/ký tự) giúp đọc rất vừa nhịp
     function typeWriterEffect(text) {
       const messageElement = document.getElementById('finalMessage');
       messageElement.innerText = ''; 
@@ -259,11 +266,11 @@
         } else {
           clearInterval(typeTimer);
         }
-      }, 75); // Tốc độ gõ chữ dịu nhẹ (75ms/chữ)
+      }, 110); 
     }
 
     function startLinearSlideshow() {
-      // 15000ms = 15 giây mỗi tấm hình
+      // Dừng 15 giây mỗi tấm
       slideTimer = setInterval(() => {
         if (currentIndex < totalImages - 1) {
           currentIndex++;
@@ -280,7 +287,6 @@
         img.classList.toggle('active', i === index);
       });
 
-      // Tự động gõ chữ cho từng slide
       typeWriterEffect(messages[index] || messages[0]);
 
       if (index === totalImages - 1) {
