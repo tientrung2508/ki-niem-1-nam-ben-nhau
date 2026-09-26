@@ -48,7 +48,7 @@
       width: 100%; height: 100%;
       object-fit: cover;
       opacity: 0;
-      transition: opacity 1s ease-in-out, transform 4s ease-in-out;
+      transition: opacity 1.2s ease-in-out, transform 6s ease-in-out;
       transform: scale(1);
     }
 
@@ -239,7 +239,7 @@
           messageElement.classList.add('show');
           startHeartRain();
 
-          // Chuyển ảnh mỗi 3 giây
+          // Bắt đầu trình chiếu mỗi 5 giây
           startLinearSlideshow();
         }
         counterElement.innerText = currentDay;
@@ -254,6 +254,7 @@
     }
 
     function startLinearSlideshow() {
+      // 5000ms = 5 giây mỗi tấm hình
       slideTimer = setInterval(() => {
         if (currentIndex < totalImages - 1) {
           currentIndex++;
@@ -261,7 +262,7 @@
         } else {
           clearInterval(slideTimer);
         }
-      }, 3000); 
+      }, 5000); 
     }
 
     function changeStage(index) {
@@ -277,14 +278,13 @@
         messageElement.innerText = messages[index] || messages[0];
         messageElement.classList.add('show');
 
-        // Khi chuyển sang tấm hình thứ 7 -> Nhạc mờ dần (Fade-out) trong 2 giây rồi tắt
+        // Khi sang tấm hình thứ 7 -> Nhạc mờ dần (Fade-out) rồi tắt hẳn
         if (index === totalImages - 1) {
           fadeOutMusic();
         }
       }, 300);
     }
 
-    // Hàm làm mờ âm thanh mượt mà
     function fadeOutMusic() {
       const music = document.getElementById('bgMusic');
       const fadeInterval = setInterval(() => {
