@@ -64,6 +64,22 @@
       z-index: 2;
     }
 
+    /* Hiệu ứng lớp màn che kết thúc phim */
+    .ending-curtain {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: #000;
+      opacity: 0;
+      z-index: 99;
+      pointer-events: none;
+      transition: opacity 3.5s ease-in-out;
+    }
+
+    .ending-curtain.close {
+      opacity: 1;
+    }
+
     .content-box {
       position: relative;
       z-index: 10;
@@ -174,6 +190,7 @@
       <img src="IMG_2299.jpeg" class="bg-image" id="img6" alt="Kỷ niệm">
     </div>
     <div class="overlay"></div>
+    <div class="ending-curtain" id="endingCurtain"></div>
 
     <div class="content-box">
       <div class="counter-box" id="counterBox">
@@ -261,7 +278,6 @@
           charIndex++;
         } else {
           clearInterval(typeTimer);
-          // Gọi hàm phản hồi sau khi gõ xong câu cuối
           if (onComplete) onComplete();
         }
       }, 110); 
@@ -284,10 +300,9 @@
         img.classList.toggle('active', i === index);
       });
 
-      // Kiểm tra nếu là bức ảnh và câu cuối cùng
       if (index === totalImages - 1) {
         typeWriterEffect(messages[index], () => {
-          // Sau khi gõ xong trọn vẹn câu "sau này nữa nhé! ❤️", đợi thêm 5.5 giây rồi mới mờ dần nhạc
+          // Sau khi gõ xong câu cuối, đợi 5.5s rồi mới hạ nhạc
           setTimeout(() => {
             fadeOutMusic();
           }, 5500);
@@ -297,7 +312,7 @@
       }
     }
 
-    // Nhạc nhỏ dần cực mượt trong khoảng 3 giây
+    // Nhạc nhỏ dần và khép màn hình lại
     function fadeOutMusic() {
       const music = document.getElementById('bgMusic');
       const fadeInterval = setInterval(() => {
@@ -307,8 +322,16 @@
           music.volume = 0;
           music.pause();
           clearInterval(fadeInterval);
+          
+          // Khi nhạc tắt hoàn toàn -> Màn hình khép lại tối dần trong 3.5 giây
+          closeCurtain();
         }
       }, 100);
+    }
+
+    function closeCurtain() {
+      const curtain = document.getElementById('endingCurtain');
+      curtain.classList.add('close');
     }
 
     function startHeartRain() {
